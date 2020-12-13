@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "887334236846",
+    "project_id": "pirlantam-3adc8",
+    "storage_bucket": "pirlantam-3adc8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:887334236846:android:76af1e693106248103733f",
+        "android_client_info": {
+          "package_name": "com.pirlantam"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "887334236846-1ldi8elgv4lft753le0a1r3fk7r8iqkr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pirlantam",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "887334236846-5fp226o7hisgjpra29cqv3golivci0q5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDa7PtEWC44JfqyG2cXqTbf7_Ohb9k9Ywo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "887334236846-5fp226o7hisgjpra29cqv3golivci0q5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
