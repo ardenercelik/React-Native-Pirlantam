@@ -8,6 +8,10 @@ target 'Pirlantam' do
 
   use_react_native!(:path => config["reactNativePath"])
 
+  pod 'react-native-slider', :path => '../node_modules/@react-native-community/slider'
+
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
   target 'PirlantamTests' do
     inherit! :complete
     # Pods for testing

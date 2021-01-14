@@ -1,26 +1,31 @@
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from '@react-navigation/stack';
-import * as React from "react"
-import {
-    View,
-    Text,
-    StyleSheet,
-    Button,
-    Alert
-    
-} from "react-native"
-import HomeScreen from "./screen/HomeScreen";
-import LoginScreen from "./screen/LoginScreen"
+import React from 'react';
+import * as eva from '@eva-design/eva';
+import {ApplicationProvider, IconRegistry} from '@ui-kitten/components';
+import {default as theme} from './theme';
+import {EvaIconsPack} from '@ui-kitten/eva-icons';
+import {ThemeProvider} from 'react-native-elements';
+import {AppNavigator} from './navigation/BottomTab';
 
-const Stack = createStackNavigator()
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
+import {SelectContextProvider} from './context/Context';
+import {PirlantaContextProvider} from './context/PirlantaContext';
 
-export default function App() {
-    return (
-        <NavigationContainer>
-            <Stack.Navigator>
-                <Stack.Screen name="Home" component={HomeScreen} />
-                <Stack.Screen name="Login" component={LoginScreen}  />
-            </Stack.Navigator>
-        </NavigationContainer>
-    )
-}
+export const Stack = createStackNavigator();
+
+export default App = () => {
+  return (
+    <>
+      <PirlantaContextProvider>
+        <SelectContextProvider>
+          <ThemeProvider>
+            <IconRegistry icons={EvaIconsPack} />
+            <ApplicationProvider {...eva} theme={{...eva.light}}>
+              <AppNavigator />
+            </ApplicationProvider>
+          </ThemeProvider>
+        </SelectContextProvider>
+      </PirlantaContextProvider>
+    </>
+  );
+};
