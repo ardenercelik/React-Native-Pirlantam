@@ -2,9 +2,10 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {BottomNavigation, BottomNavigationTab} from '@ui-kitten/components';
-import SearchScreen from '../screen/SearchScreen';
 import FetchScreen from '../screen/PirlantaScreen';
-
+import LoginScreen from '../screen/LoginScreen';
+import MagazaScreen from '../screen/MagazaScreen';
+import SearchScreenStack from '../screen/SearchScreenStack';
 const {Navigator, Screen} = createBottomTabNavigator();
 
 const BottomTabBar = ({navigation, state}) => (
@@ -12,14 +13,18 @@ const BottomTabBar = ({navigation, state}) => (
     selectedIndex={state.index}
     onSelect={(index) => navigation.navigate(state.routeNames[index])}>
     <BottomNavigationTab title="Taş Ara" />
-    <BottomNavigationTab title="Mağaza" />
+    <BottomNavigationTab title="Ana Ekran" />
+    <BottomNavigationTab title="Magaza" />
+    <BottomNavigationTab title="Profil" />
   </BottomNavigation>
 );
 
 const TabNavigator = () => (
   <Navigator tabBar={(props) => <BottomTabBar {...props} />}>
-    <Screen name="Ara" component={SearchScreen} />
-    <Screen name="Mağaza" component={FetchScreen} />
+    <Screen name="Ara" component={SearchScreenStack} />
+    <Screen name="Ana Ekran" component={FetchScreen} />
+    <Screen name="Magaza" component={MagazaScreen} />
+    <Screen name="Profil" component={LoginScreen} />
   </Navigator>
 );
 

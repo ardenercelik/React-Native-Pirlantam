@@ -21,18 +21,8 @@ export function isZipCode(value = '') {
 }
 
 export function isPhoneNum(num) {
-  const bFlag = true;
-  if (bFlag) return true;
-  return num.length === 12; // Temp Check
-}
-
-export function isJson(str) {
-  try {
-    JSON.parse(str);
-  } catch (error) {
-    return false;
-  }
-  return true;
+  regex = /^[0-9\-\+]{9,15}$/;
+  if (num.match(regex)) return true; // Temp Check
 }
 
 function isAcceptedCard(cardno) {
@@ -64,6 +54,24 @@ export function isPassword(str) {
   return true;
 }
 
-export function isItNumber(str) {
+function isItNumber(str) {
   return /^\-?[0-9]+(e[0-9]+)?(\.[0-9]+)?$/.test(str);
 }
+function sleep(seconds) {
+  var waitUntil = new Date().getTime() + seconds * 1000;
+  while (new Date().getTime() < waitUntil) true;
+}
+//display value görünümü ayarlamak için
+export const changeInputDisplayValue = (value) => {
+  if (!isItNumber(value)) {
+    return '0';
+  } else if (value < 1.0) {
+    return (value * 10).toFixed(2);
+  }
+  return value < 4.0 ? value.toString() : (value / 100).toFixed(2).toString();
+};
+
+//array değeri null geliyorsa "" olarak düzeltiyor
+export const checkIfNull = (value, array) => {
+  return array[value - 1] != null ? array[value - 1] : '';
+};

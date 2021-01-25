@@ -1,0 +1,1 @@
+adb shell input text "7444555666"

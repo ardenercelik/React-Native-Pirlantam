@@ -48,4 +48,4 @@ export const cutsArray = ['POOR', 'FAIR', 'GOOD', 'VERY GOOD', 'EXCELLENT'];
 
 export const certsArray = ['GIA', 'HRD'];
 
-export const BASE_URL = 'https://localhost:44328';
+export const QUERY_URL = 'http://192.168.0.106:5000/api/pirlantas/query?';

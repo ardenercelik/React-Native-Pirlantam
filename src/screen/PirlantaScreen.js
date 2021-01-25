@@ -1,87 +1,60 @@
 import React, {useContext} from 'react';
-import {Text, View, Button, TextInput} from 'react-native';
-import axios from 'axios';
-import {useState, useEffect} from 'react/cjs/react.development';
-import {FlatList} from 'react-native-gesture-handler';
-import {SelectContext} from '../context/Context';
+import {View, TextInput, Modal} from 'react-native';
+import {useState} from 'react/cjs/react.development';
+
 import {
-  typesArray,
-  colorsArray,
-  cutsArray,
-  certsArray,
-  claritiesArray,
-} from '../constants';
-import PirlantaApi from '../api/PirlantaService';
+  Button,
+  ListItem,
+  Divider,
+  Icon,
+  List,
+  OverflowMenu,
+  MenuItem,
+  TopNavigationAction,
+  Text,
+} from '@ui-kitten/components';
 
-const checkIfNull = (value, array) => {
-  return array[value - 1] != null ? array[value - 1] : '';
-};
+const MenuIcon = (props) => <Icon {...props} name="more-vertical-outline" />;
+const PhoneIcon = (props) => <Icon {...props} name="phone-outline" />;
+const SaveIcon = (props) => <Icon {...props} name="star-outline" />;
+const StoreIcon = (props) => <Icon {...props} name="home-outline" />;
 
-function FetchScreen() {
-  const {state, dispatch} = useContext(SelectContext);
-  const [posts, setPosts] = useState([]);
-
-  const fetchPirlanta = () => {
-    PirlantaApi.query({
-      color: checkIfNull(state.color, colorsArray),
-      type: checkIfNull(state.types, typesArray),
-      cut: checkIfNull(state.cut, cutsArray),
-      cert: checkIfNull(state.cert, certsArray),
-      clarity: checkIfNull(state.clarity, claritiesArray),
-      caratmin: 0,
-      caratmax: 4,
-    })
-      //.then((response) => response.data)
-      .then((json) => {
-        console.log(json.data);
-        setPosts(json.data);
-      })
-      .catch((error) => console.error(error));
+function FetchScreen({navigation}) {
+  const [visible, setVisible] = useState(false);
+  const [menuVisible, setMenuVisible] = React.useState(false);
+  const toggleMenu = () => {
+    setMenuVisible(!menuVisible);
   };
 
-  //   useEffect(() => {
-  //     PirlantaApi.query({
-  //       color: checkIfNull(state.color, colorsArray),
-  //       type: checkIfNull(state.types, typesArray),
-  //       cut: checkIfNull(state.cut, cutsArray),
-  //       cert: checkIfNull(state.cert, certsArray),
-  //       clarity: checkIfNull(state.clarity, claritiesArray),
-  //       caratmin: 0,
-  //       caratmax: 4,
-  //     })
-  //       //.then((response) => response.data)
-  //       .then((json) => {
-  //         console.log(json.data);
-  //         setPosts(json.data);
-  //       })
-  //       .catch((error) => console.error(error));
-  //   }, [state]);
+  const renderMenuAction = () => (
+    <TopNavigationAction icon={MenuIcon} onPress={toggleMenu} />
+  );
 
-  //   const onChange = (e) => {
-  //     //alert("post")
-  //     setTextInput(e.toUpperCase());
-  //   };
+  const PirlantaOverflow = () => {
+    return (
+      <OverflowMenu
+        anchor={renderMenuAction}
+        visible={menuVisible}
+        placement="bottom end"
+        onBackdropPress={toggleMenu}>
+        <MenuItem accessoryLeft={PhoneIcon} title="Ara" />
+        <MenuItem accessoryLeft={StoreIcon} title="Mağaza" />
+        <MenuItem accessoryLeft={SaveIcon} title="Kaydet" />
+      </OverflowMenu>
+    );
+  };
 
   return (
-    <View style={{flex: 1, padding: 24}}>
-      <TextInput onChangeText={(e) => onChange(e)}></TextInput>
-      <Button
-        onPress={() => {
-          fetchPirlanta();
-        }}
-        title="Fetch Data">
-        <Text></Text>
-      </Button>
-      <FlatList
-        data={posts}
-        keyExtractor={({id}, index) => id.toString()}
-        renderItem={({item}) => (
-          <>
-            <Text>
-              kesim: {item.type} karat: {item.carat} adet: {item.adet}
-            </Text>
-          </>
-        )}
+    <View style={{flex: 1, padding: 24, margin: 10}}>
+      <Text>Magaza?</Text>
+      {/* <List styl ItemSeparatorComponent={Divider}></List> */}
+      <ListItem
+        style={{borderRadius: 5}}
+        onLongPress={() => setVisible(true)}
+        title="Magaza: Alacam | Adet: 12 | Karat: 0.5"
+        description="EMERALD - S - I2 - GOOD - GIA"
+        accessoryRight={PirlantaOverflow}
+        accessoryLeft={() => <Text category="h6">50$</Text>}
       />
     </View>
   );

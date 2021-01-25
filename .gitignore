@@ -58,4 +58,4 @@ buck-out/
 # CocoaPods
 /ios/Pods/
 
-/src/screen/Denemeler/
+/src/screen/Denemeler/*
