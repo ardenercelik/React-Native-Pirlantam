@@ -4,8 +4,9 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {BottomNavigation, BottomNavigationTab} from '@ui-kitten/components';
 import FetchScreen from '../screen/PirlantaScreen';
 import LoginScreen from '../screen/LoginScreen';
-import MagazaScreen from '../screen/MagazaScreen';
+import MagazaScreen from '../screen/magaza/MagazaScreen';
 import SearchScreenStack from '../screen/SearchScreenStack';
+import MagazaScreenStack from '../screen/MagazaScreenStack';
 const {Navigator, Screen} = createBottomTabNavigator();
 
 const BottomTabBar = ({navigation, state}) => (
@@ -23,7 +24,7 @@ const TabNavigator = () => (
   <Navigator tabBar={(props) => <BottomTabBar {...props} />}>
     <Screen name="Ara" component={SearchScreenStack} />
     <Screen name="Ana Ekran" component={FetchScreen} />
-    <Screen name="Magaza" component={MagazaScreen} />
+    <Screen name="Magaza" component={MagazaScreenStack} />
     <Screen name="Profil" component={LoginScreen} />
   </Navigator>
 );

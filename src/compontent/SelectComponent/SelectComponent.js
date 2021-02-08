@@ -11,19 +11,18 @@ import {
   certsArray,
 } from '../../constants';
 import {SelectQuery} from './SelectStatus';
-import {SelectContext} from '../../context/Context';
-import {useForm, Controller} from 'react-hook-form';
-import * as yup from 'yup';
-import {yupResolver} from '@hookform/resolvers/yup';
 
 const SearchIcon = (props) => <Icon {...props} name="search-outline" />;
 
-const schema = yup.object().shape({
-  tel: yup.number(),
-});
-
-export const SelectComponent = (props) => {
-  const {state, dispatch} = useContext(SelectContext);
+export const SelectComponent = ({
+  toggle,
+  visible,
+  accessoryLeft,
+  accessoryRight,
+  title,
+  state,
+  dispatch,
+}) => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -32,26 +31,18 @@ export const SelectComponent = (props) => {
       duration: 500,
       useNativeDriver: true,
     }).start();
-  }, [fadeAnim, props.visible]);
-
-  const {getValues, register, reset, control, handleSubmit, errors} = useForm({
-    resolver: yupResolver(schema),
-    defaultValues: {
-      min: 0,
-      max: 4.0,
-    },
-  });
-
-  const onSubmit = (data) => {
-    console.log(data);
-  };
+  }, [fadeAnim, visible]);
 
   return (
     <Animated.View style={{width: '100%', height: '100%', opacity: fadeAnim}}>
       <View style={styles.container}>
-        <TopModelNav />
+        <TopModelNav
+          accessoryLeft={accessoryLeft}
+          accessoryRight={() => accessoryRight(dispatch)}
+          title={title}
+        />
         <View style={styles.queryContainer}>
-          <View style={{marginHorizontal: 3}}>
+          <View>
             <Inputs
               valueMax={state.max.toString()}
               valueMin={state.min.toString()}
@@ -117,8 +108,8 @@ export const SelectComponent = (props) => {
           />
           <Button
             accessoryLeft={SearchIcon}
-            style={{margin: 3}}
-            onPress={props.toggle}>
+            style={{marginVertical: 3}}
+            onPress={toggle}>
             Ara
           </Button>
         </View>

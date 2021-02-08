@@ -1,21 +1,20 @@
 import React, {useState} from 'react';
-import {Text} from '@ui-kitten/components';
+import {Spinner, Text, Modal} from '@ui-kitten/components';
 import {View, StyleSheet} from 'react-native';
 
-import Envanter from './Envanter';
-import Header from './Header';
+import Envanter from '../../compontent/Magaza/Envanter';
+import Header from '../../compontent/Magaza/Header';
 import useAxiosFetch from '../../hooks/useAxiosFetch';
+import {BASE_URL} from '../../constants';
 
-const QUERY_URL = 'http://192.168.0.106:5000/api/magazas/';
+const QUERY_URL = `${BASE_URL}/magazas/`;
 
 const MagazaVisitorScreen = ({route}) => {
   const [search, setSearch] = useState(true);
   // const [data, setData] = useState([]);
   const {magazaId} = route.params;
-  console.log('magaza visitor');
 
   const url = QUERY_URL + magazaId;
-  console.log('generated query: ' + url);
   //data buradan geliyör custom
   const {data, loading, error, errorMessage} = useAxiosFetch(search, url);
 
@@ -30,11 +29,17 @@ const MagazaVisitorScreen = ({route}) => {
                 number: data.number,
                 adres: data.adres,
               }}></Header>
-            <Envanter data={data.pirlantalar} loading={loading}></Envanter>
+            <Envanter
+              phoneNumber={data.number}
+              status={'visitor'}
+              data={data.pirlantalar}
+            />
           </View>
         </>
       ) : (
-        <Text>arden</Text>
+        <Modal>
+          <Spinner />
+        </Modal>
       )}
     </React.Fragment>
   );

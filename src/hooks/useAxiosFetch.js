@@ -1,24 +1,33 @@
 import React, {useState, useEffect} from 'react';
 
 import axios from 'axios';
+import axiosRetry from 'axios-retry';
 
 //input olarak search geliyor. search false arama yapmıyor, bir şey ile search true olduğunda çalışır. useeffect ile search false yapmak lazım dış fonksiyonda.
 //asenkron olarak çekiyor input search: bool url:çekeceğinurl
-const useAxiosFetch = (search, url) => {
+
+// search : search auto açıksa toggle, değilse kontrol
+// auto: sayfa açınca direk arar, düğmeli olacaksa koyma
+// url: komple url,
+// token: auth varsa header
+
+const useAxiosFetch = (search, url, token, auto) => {
   const [data, setData] = useState(null);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const [loading, setLoading] = useState(true);
-  console.log('search: ' + search);
-  //console.log(data);
-  console.log('generated query in func: ' + url);
+
+  //console.log('search: ' + search);
   //console.log(data);
   useEffect(() => {
-    async function fetchData(source, unmounted) {
+    async function fetchData(source, unmounted, idToken) {
       console.log('query: ' + url);
       await axios
         .get(url, {
           cancelToken: source.token,
+          headers: {
+            Authorization: `Bearer ${idToken}`,
+          },
         })
         .then((a) => {
           if (!unmounted) {
@@ -28,7 +37,7 @@ const useAxiosFetch = (search, url) => {
         })
         .catch(function (e) {
           if (!unmounted) {
-            console.log('error');
+            //console.log('error status: ' + e.response.status);
             setError(true);
             setErrorMessage(e.message);
             setLoading(false);
@@ -42,14 +51,14 @@ const useAxiosFetch = (search, url) => {
     }
     let unmounted = false;
     let source = axios.CancelToken.source();
-    if (search) {
-      fetchData(source, unmounted);
+    if (search || auto) {
+      fetchData(source, unmounted, token);
     }
     return function () {
       unmounted = true;
       source.cancel('Cancelling in cleanup');
     };
-  }, [search]);
+  }, [search, token, auto]);
 
   return {data, loading, error, errorMessage};
 };

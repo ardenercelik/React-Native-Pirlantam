@@ -1,7 +1,4 @@
-// new
-import React, {useReducer} from 'react';
-// new
-function reducer(state, action) {
+export function searchReducer(state, action) {
   switch (action.type) {
     case 'SET_COLOR':
       return {...state, color: action.color};
@@ -26,12 +23,13 @@ function reducer(state, action) {
         cert: [],
         min: '0',
         minDisplay: '0',
-        max: '4.0,',
+        max: '4.0',
         maxDisplay: '4.0',
       };
   }
 }
-const initialState = {
+
+export const initialSearchState = {
   cut: null,
   types: null,
   color: null,
@@ -42,16 +40,3 @@ const initialState = {
   max: '4.0',
   maxDisplay: '4.0',
 };
-
-const SelectContext = React.createContext(initialState);
-function SelectContextProvider(props) {
-  // new
-  const [state, dispatch] = useReducer(reducer, initialState);
-  return (
-    // new
-    <SelectContext.Provider value={{state, dispatch}}>
-      {props.children}
-    </SelectContext.Provider>
-  );
-}
-export {SelectContext, SelectContextProvider};

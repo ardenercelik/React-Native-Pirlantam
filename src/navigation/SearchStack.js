@@ -1,19 +1,19 @@
 import {createStackNavigator} from '@react-navigation/stack';
-import Login from '../compontent/authorization/LoginScreen';
-import Register from '../compontent/authorization/Register';
 import * as React from 'react';
-import SearchScreen from '../compontent/SearchScreen';
-import MagazaVisitorScreen from '../compontent/Magaza/MagazaVisitorScreen';
-
+import MagazaVisitorScreen from '../screen/search/MagazaVisitorScreen';
+import SearchScreen from '../screen/search/SearchScreen';
+import {searchStackNavs} from './Navs';
 const Stack = createStackNavigator();
-
-const LoginStack = () => {
+const SearchStack = () => {
   return (
     <Stack.Navigator initialRouteName="Menu">
-      <Stack.Screen name="Search" component={SearchScreen} />
-      <Stack.Screen name="Magaza" component={MagazaVisitorScreen} />
+      <Stack.Screen name={searchStackNavs.Search} component={SearchScreen} />
+      <Stack.Screen
+        name={searchStackNavs.MagazaVisitor}
+        component={MagazaVisitorScreen}
+      />
     </Stack.Navigator>
   );
 };
 
-export default LoginStack;
+export default SearchStack;

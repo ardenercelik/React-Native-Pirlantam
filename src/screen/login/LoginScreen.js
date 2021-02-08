@@ -5,30 +5,14 @@ import * as yup from 'yup';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {useForm, Controller} from 'react-hook-form';
 import auth from '@react-native-firebase/auth';
-import {LoginButton, AccessToken} from 'react-native-fbsdk';
 import {LoginContext} from '../../context/LoginContext';
+import {isFirstTime} from '../../helper/login';
+
 const phoneRegex = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
-const userMetadataRegex = /^(\w+-\w+-\w+)T(\w+:\w+:\w+).+Z$/;
 
 const schema = yup.object().shape({
   tel: yup.string().matches(phoneRegex, 'Geçersiz numara'),
 });
-
-const isFirstTime = (user) => {
-  if (user) {
-    const cre = user.metadata.creationTime.match(userMetadataRegex);
-    const lst = user.metadata.lastSignInTime.match(userMetadataRegex);
-    let CrDate = cre[1];
-    let CrTime = cre[2];
-    let LsDate = lst[1];
-    let LsTime = lst[2];
-    if (CrDate === LsDate && CrTime === LsTime) {
-      console.log('first sign in');
-    } else {
-      console.log('welcome back');
-    }
-  }
-};
 
 function Login({navigation}) {
   const {user, setUser} = useContext(LoginContext);
@@ -48,8 +32,14 @@ function Login({navigation}) {
     return subscriber; // unsubscribe on unmount
   }, []);
   function onAuthStateChanged(user) {
-    setUser(user);
-    isFirstTime(user);
+    if (user) {
+      setUser(user);
+      if (isFirstTime(user)) {
+        navigation.navigate('Register');
+      } else {
+        navigation.navigate('Menu');
+      }
+    }
     if (initializing) setInitializing(false);
   }
   const onSubmit = (data) => {
@@ -59,12 +49,12 @@ function Login({navigation}) {
   // const getToken = async () => {
   //   if (user) {
   //     const user = await auth().currentUser;
-  //     // const idTokenResult = await auth().currentUser.getIdToken(
-  //     //   /* forceRefresh */ true,
-  //     // );
+  //     const idTokenResult = await auth().currentUser.getIdToken(
+  //       /* forceRefresh */ true,
+  //     );
   //     // setUser(user);
-  //     // idTokenResult = user.getIdToken;
-  //     // console.log('User JWT: ', idTokenResult);
+  //     //idTokenResult = user.getIdToken();
+  //     console.log('User JWT: ', idTokenResult);
   //     // console.log(user.uid);
   //   }
   // };
@@ -72,27 +62,17 @@ function Login({navigation}) {
   //   getToken();
   // }, []);
 
-  async function confirmCode() {
+  async function confirmCode(user) {
     try {
       console.log(code);
       await confirm.confirm(code);
-      navigation.navigate('Verify');
     } catch (error) {
       console.log('Invalid code.');
     } finally {
     }
   }
-  const signOut = () => {
-    if (user) {
-      auth()
-        .signOut()
-        .then(() => console.log('User signed out!'));
-      setUser(null);
-    } else {
-      console.log('no user signed in');
-    }
-  };
-  const {register, control, handleSubmit, errors} = useForm({
+
+  const {control, handleSubmit, errors} = useForm({
     resolver: yupResolver(schema),
   });
 
@@ -102,7 +82,6 @@ function Login({navigation}) {
     <React.Fragment>
       <View style={styles.container}>
         <View>
-          <Text>Login</Text>
           <Controller
             control={control}
             render={({onChange, onBlur, value}) => (
@@ -128,22 +107,6 @@ function Login({navigation}) {
 
           <Button onPress={handleSubmit(onSubmit)}>Login</Button>
         </View>
-        <View>
-          <LoginButton
-            onLoginFinished={(error, result) => {
-              if (error) {
-                console.log('login has error: ' + result.error);
-              } else if (result.isCancelled) {
-                console.log('login is cancelled.');
-              } else {
-                AccessToken.getCurrentAccessToken().then((data) => {
-                  console.log(data.accessToken.toString());
-                });
-              }
-            }}
-            onLogoutFinished={() => console.log('logout.')}
-          />
-        </View>
 
         <Modal
           backdropStyle={{backgroundColor: 'rgba(0,0,0,0.9)'}}
@@ -158,10 +121,6 @@ function Login({navigation}) {
             Confirm Code
           </Button>
         </Modal>
-
-        <Button title="Confirm Code" onPress={() => signOut()}>
-          Sign Out
-        </Button>
       </View>
     </React.Fragment>
   );

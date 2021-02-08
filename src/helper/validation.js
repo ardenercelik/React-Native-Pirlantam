@@ -19,7 +19,6 @@ export function isNumeric(num) {
 export function isZipCode(value = '') {
   return /(^\d{5}$)|(^\d{5}-\d{4}$)/.test(value);
 }
-
 export function isPhoneNum(num) {
   regex = /^[0-9\-\+]{9,15}$/;
   if (num.match(regex)) return true; // Temp Check
@@ -75,3 +74,8 @@ export const changeInputDisplayValue = (value) => {
 export const checkIfNull = (value, array) => {
   return array[value - 1] != null ? array[value - 1] : '';
 };
+export const returnStringFromArray = (value, array) => {
+  return array[value - 1];
+};
+
+export const phoneRegex = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;

@@ -1,13 +1,6 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {
-  Layout,
-  Select,
-  SelectItem,
-  IndexPath,
-  Text,
-  SelectGroup,
-} from '@ui-kitten/components';
+import {Select, SelectItem} from '@ui-kitten/components';
 
 export const SelectQuery = (props) => {
   const groupDisplayValues = props.values[props.index - 1];
@@ -31,7 +24,7 @@ export const SelectQuery = (props) => {
 };
 
 const styles = StyleSheet.create({
-  select: {marginHorizontal: 3},
+  select: {},
 
   container: {
     marginVertical: 3,

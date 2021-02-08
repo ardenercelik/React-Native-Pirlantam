@@ -1,11 +1,11 @@
 import * as React from 'react';
 import {StyleSheet} from 'react-native';
-import SearchStack from '../navigation/SearchStack';
+import MagazaStack from '../navigation/MagazaStack';
 
-function SearchScreenStack() {
+function MagazaScreenStack() {
   return (
     <React.Fragment>
-      <SearchStack />
+      <MagazaStack />
     </React.Fragment>
   );
 }
@@ -16,5 +16,5 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SearchScreenStack;
+export default MagazaScreenStack;
 //  ios ayarları yok

@@ -1,40 +1,36 @@
-import React, {useState, useEffect, useContext, useRef} from 'react';
+import React, {useState, useEffect, useReducer} from 'react';
+import {Button, Text, Spinner, List, Divider} from '@ui-kitten/components';
 import {
-  Button,
-  Text,
-  Icon,
-  Spinner,
-  List,
-  Divider,
-  ListItem,
-} from '@ui-kitten/components';
-import {
-  typesArray,
   cutsArray,
   claritiesArray,
   colorsArray,
   certsArray,
-} from '../constants';
-import {View, StatusBar, StyleSheet} from 'react-native';
-import SelectModal from './SelectModal';
-import {SelectContext} from '../context/Context';
-import {checkIfNull} from '../helper/validation';
-import useAxiosFetch from '../hooks/useAxiosFetch';
-import PirlantaListItem from './PirlantaListItem';
+  QUERY_URL,
+  typesArray,
+} from '../../constants';
+import {View, StyleSheet} from 'react-native';
+
+import SelectModal from '../../compontent/pirlanta/SelectModal';
+import PirlantaListItem from '../../compontent/pirlanta/PirlantaListItem';
+import {checkIfNull} from '../../helper/validation';
+import useAxiosFetch from '../../hooks/useAxiosFetch';
+import {searchReducer, initialSearchState} from '../../hooks/SearchActions';
+
+//TODO
 //input olarak search geliyor. search false arama yapmıyor, bir şey ile search true olduğunda çalışır. useeffect ile search false yapmak lazım dış fonksiyonda.
-// carat min-max değerleri al
-// Magaza Sayfalı ekle, Pirlantanın fiyat propu da olsun.
-//  Arkaplanda yükleniyor koy, sonuçlardan verileri alıp güzel bir liste olarak ver //array lookup işlemi constant üzerinden yapılsa daha iyi, api servise get post put ekle, cevapda mağaza da dönsün, sırala karat artan azala, magaza sayfası, login
-const QUERY_URL = 'http://192.168.0.106:5000/api/pirlantas/query?';
+// carat min-max değerleri al x
+// Magaza Sayfalı ekle, Pirlantanın fiyat propu da olsun. x
+// Arkaplanda yükleniyor koy, sonuçlardan verileri alıp güzel bir liste olarak ver //array lookup işlemi constant üzerinden yapılsa daha iyi, api servise get post put ekle, cevapda mağaza da dönsün, sırala karat artan azala, magaza sayfası, login
+
 const SearchScreen = ({navigation}) => {
-  useEffect(() => StatusBar.setHidden(true), []);
+  //useEffect(() => StatusBar.setHidden(true), []);
   //düğmeye basınca arama yapem mi
   const [search, setSearch] = useState(false);
   //seçilen şeylerin stateleri
-  const {state, dispatch} = useContext(SelectContext);
+  const [state, dispatch] = useReducer(searchReducer, initialSearchState);
   //model gözüküyor mu gözükmüyor mu, tepedi butonla ara butonu da bakıyor
   const [modelvisible, setMVisible] = useState(false);
-  console.log('loading: ' + loading);
+
   params = {
     color: checkIfNull(state.color, colorsArray),
     type: checkIfNull(state.types, typesArray),
@@ -47,21 +43,20 @@ const SearchScreen = ({navigation}) => {
   //seçilen statelerer göre query oluşturuyor
   const query = new URLSearchParams(params);
   const url = QUERY_URL + query;
-  console.log('generated query: ' + url);
+
   //data buradan geliyör custom
 
   const {data, loading, error, errorMessage} = useAxiosFetch(search, url);
   //data döndüğümnde search false yapıyor ki tekrar aramasın
 
   // koymazsam hata veriyor??
-  const renderItem1 = ({item, index}) => (
+  const renderPirlanta = ({item, index}) => (
     <PirlantaListItem navigation={navigation} item={item} index={index} />
   );
 
   useEffect(() => {
     setSearch(false);
   }, [data]);
-
   return (
     <React.Fragment>
       <View style={styles.container}>
@@ -81,7 +76,7 @@ const SearchScreen = ({navigation}) => {
             ) : (
               <List
                 data={data}
-                renderItem={renderItem1}
+                renderItem={renderPirlanta}
                 ItemSeparatorComponent={Divider}
               />
             ),
@@ -102,6 +97,8 @@ const SearchScreen = ({navigation}) => {
             setMVisible(false);
             setSearch(true);
           }}
+          selectState={state}
+          selectDispatch={dispatch}
         />
       </View>
     </React.Fragment>
