@@ -1,15 +1,17 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Linking} from 'react-native';
 
 import {
-  ListItem,
   Icon,
   OverflowMenu,
   MenuItem,
   TopNavigationAction,
+  Text,
 } from '@ui-kitten/components';
 import {BASE_URL} from '../../constants';
 import {deleteItem} from '../../helper/axios';
+import AreYouSureModal, {modalMsg} from '../AreYouSure';
+import {msg, successNotification} from '../../helper/notification';
 
 const DELETE_URL = `${BASE_URL}/pirlantas/`;
 
@@ -30,8 +32,23 @@ const returnPhoneNumberForPlatform = (number) => {
 //emin misiniz ekle
 //düzelt, düzelte bide sıfırla ekle
 const MagazaOwnerMenu = ({pirlantaId, search, token}) => {
+  const [visible, setVisible] = useState(true);
   return (
     <React.Fragment>
+      <AreYouSureModal
+        visible={visible}
+        setVisible={setVisible}
+        onYes={async () => {
+          const url = DELETE_URL + pirlantaId;
+          await deleteItem(url, token);
+          setVisible(false);
+          search();
+          successNotification(msg.successfulDelete);
+        }}
+        onNo={() => setVisible(false)}
+        text={<Text>{modalMsg.pirlantaDelete}</Text>}
+      />
+
       <MenuItem
         onPress={() => {
           console.log('edit');
@@ -40,10 +57,8 @@ const MagazaOwnerMenu = ({pirlantaId, search, token}) => {
         title="Düzenle"
       />
       <MenuItem
-        onPress={async () => {
-          const url = DELETE_URL + pirlantaId;
-          await deleteItem(url, token);
-          search();
+        onPress={() => {
+          setVisible(true);
         }}
         accessoryLeft={DeleteIcon}
         title="Sil"
@@ -69,6 +84,7 @@ const MagazaOverflowMenu = ({
   pirlantaId,
   search,
   token,
+  setVisible,
 }) => {
   const renderMenuAction = () => (
     <TopNavigationAction icon={MenuIcon} onPress={toggleMenu} />
@@ -80,6 +96,7 @@ const MagazaOverflowMenu = ({
 
   return (
     <OverflowMenu
+      setVisible={setVisible}
       anchor={renderMenuAction}
       visible={menuVisible}
       placement="bottom end"
@@ -91,6 +108,7 @@ const MagazaOverflowMenu = ({
           search={search}
           token={token}
           pirlantaId={pirlantaId}
+          setVisible={setVisible}
         />
       )}
     </OverflowMenu>

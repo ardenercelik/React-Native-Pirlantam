@@ -82,3 +82,9 @@ export async function deleteItem(url, token) {
     console.log(`😱 Axios request failed: ${e.response}`);
   }
 }
+
+export async function fetchData(url) {
+  console.log('query: ' + url);
+  const response = await axiosInstance.get(url);
+  return response.data;
+}

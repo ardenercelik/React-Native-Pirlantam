@@ -8,6 +8,7 @@ import {phoneRegex} from '../../helper/validation';
 import {LoginContext} from '../../context/LoginContext';
 import {BASE_URL} from '../../constants';
 import {axiosPut} from '../../helper/axios';
+import {msg, successNotification} from '../../helper/notification';
 
 const schema = yup.object().shape({
   tel: yup.string().matches(phoneRegex, 'Invalid phone.'),
@@ -19,8 +20,8 @@ const PhoneIcon = (props) => <Icon {...props} name="smartphone-outline" />;
 const MailIcon = (props) => <Icon {...props} name="email-outline" />;
 
 const HeaderInput = ({route, navigation}) => {
-  const {token, user, setUser} = useContext(LoginContext);
-  const {getValues, register, reset, control, handleSubmit, errors} = useForm({
+  const {token, user} = useContext(LoginContext);
+  const {getValues, reset, control, handleSubmit, errors} = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
       name: route.params.data.name,
@@ -42,6 +43,7 @@ const HeaderInput = ({route, navigation}) => {
     await axiosPut(url, putData, token);
     route.params.search();
     navigation.goBack();
+    successNotification(msg.successMagazaChange);
   };
   return (
     <View>

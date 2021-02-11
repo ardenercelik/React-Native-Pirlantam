@@ -1,14 +1,14 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import {Text, Button, Icon} from '@ui-kitten/components';
 import {View, StyleSheet} from 'react-native';
-import useAxiosFetch from '../../hooks/useAxiosFetch';
-import {useContext} from 'react/cjs/react.development';
 import {LoginContext} from '../../context/LoginContext';
 import Envanter from '../../compontent/Magaza/Envanter';
 import Header from '../../compontent/Magaza/Header';
 import {BASE_URL} from '../../constants';
 import ModalSpinner from '../../compontent/ModalSpinner';
 import {magazaScreenNavs} from '../../navigation/Navs';
+import {useQuery} from 'react-query';
+import {fetchData, deleteItem} from '../../helper/axios';
 
 const QUERY_URL = `${BASE_URL}/magazas/query?uid=`;
 
@@ -17,13 +17,13 @@ const EditIcon = (props) => <Icon {...props} name="edit-2-outline" />;
 
 const EnvanterAddButton = ({navigation, magazaId, search, token}) => (
   <Button
-    onPress={() =>
+    onPress={() => {
       navigation.navigate(magazaScreenNavs.AddPirlanta, {
         magazaId: magazaId,
         token: token,
         search: search,
-      })
-    }
+      });
+    }}
     size="small"
     accessoryLeft={PlusIcon}
   />
@@ -31,26 +31,22 @@ const EnvanterAddButton = ({navigation, magazaId, search, token}) => (
 const MagazaLoggedInScreen = ({navigation}) => {
   const {token, user, setUser, magazaLoading} = useContext(LoginContext);
 
-  const [auto, setAuto] = useState(true);
-
-  const [search, setSearch] = useState(false);
-
   const url = QUERY_URL + user.uid;
   //data buradan geliyör custom
-  useEffect(() => {
-    if (magazaLoading) {
-      setAuto(false);
-    } else {
-      setAuto(true);
-    }
-  }, [magazaLoading]);
-
-  const {data, loading, error, errorMessage} = useAxiosFetch(
-    search,
-    url,
-    token,
-    auto,
+  const [visible, setVisible] = useState(true);
+  const {isLoading: loading, data, refetch, error: errorMessage} = useQuery(
+    'magaza',
+    () => fetchData(url),
+    {
+      enabled: false,
+      token: token,
+    },
   );
+
+  useEffect(() => {
+    refetch();
+  }, []);
+
   useEffect(() => {
     console.log('Magaza Logged In Error:' + errorMessage);
   }, [errorMessage]);
@@ -60,7 +56,7 @@ const MagazaLoggedInScreen = ({navigation}) => {
   //aramada kendi olmayanı returnle,
   //db paging, db connection pool
   //register olurken uygulamayı kapasa, internet gitse?
-  //feedback react-native-feedback
+  //feedback react-native-notifier
 
   //magaza ekranı
   //async storage - offline case - react-native-offline
@@ -70,7 +66,7 @@ const MagazaLoggedInScreen = ({navigation}) => {
   //dizayn
   return (
     <React.Fragment>
-      {!loading && !magazaLoading ? (
+      {!loading ? (
         <>
           <View style={styles.topContainer}>
             <Header
@@ -83,7 +79,7 @@ const MagazaLoggedInScreen = ({navigation}) => {
                 onPress={() => {
                   navigation.navigate(magazaScreenNavs.EditHeader, {
                     data: data,
-                    search: () => setSearch(!search),
+                    search: () => refetch(),
                     magazaId: data?.magazaId,
                     token: token,
                   });
@@ -98,18 +94,18 @@ const MagazaLoggedInScreen = ({navigation}) => {
               button={
                 <EnvanterAddButton
                   magazaId={data?.magazaId}
-                  search={() => setSearch(!search)}
+                  search={() => refetch()}
                   token={token}
                   navigation={navigation}
                 />
               }
-              search={() => setSearch(!search)}
+              search={() => refetch()}
               token={token}
               data={data?.pirlantalar}></Envanter>
           </View>
         </>
       ) : (
-        <Text>Loading</Text>
+        <ModalSpinner />
       )}
     </React.Fragment>
   );
@@ -131,10 +127,10 @@ const MagazaLoggedOutScreen = () => {
 
 //logout olup başka user geçince error veriyor
 const MagazaScreen = ({navigation}) => {
-  const {user} = useContext(LoginContext);
+  const {user, magazaLoading} = useContext(LoginContext);
   return (
     <View>
-      {user ? (
+      {user && !magazaLoading ? (
         <MagazaLoggedInScreen navigation={navigation} />
       ) : (
         <MagazaLoggedOutScreen />

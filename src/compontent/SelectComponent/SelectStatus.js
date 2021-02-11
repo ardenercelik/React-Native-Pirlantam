@@ -4,7 +4,6 @@ import {Select, SelectItem} from '@ui-kitten/components';
 
 export const SelectQuery = (props) => {
   const groupDisplayValues = props.values[props.index - 1];
-
   return (
     <View style={styles.container}>
       <Select

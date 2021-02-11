@@ -42,19 +42,19 @@ function Register({navigation}) {
     },
   });
   const onSubmit = (data) => {
-    urlUser = `${BASE_URL}/users`;
+    let urlUser = `${BASE_URL}/users`;
     let userData = {
       uid: user.uid,
       name: data.name,
       mail: data.email,
       number: user.phoneNumber,
     };
-    urlMagaza = `${BASE_URL}/magazas`;
+    let urlMagaza = `${BASE_URL}/magazas`;
     axiosPost(urlUser, userData, token);
     let magazaData = {
       uid: user.uid,
       number: user.phoneNumber,
-      name: data.magazaName == '' ? data.name : data.magazaName,
+      name: data.magazaName === '' ? data.name : data.magazaName,
       adres: data.magazaAdres,
     };
 

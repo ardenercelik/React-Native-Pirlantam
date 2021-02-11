@@ -13,6 +13,8 @@ import {
   TopNavigationAction,
   Text,
 } from '@ui-kitten/components';
+import {fetchData} from '../helper/axios';
+import {useQuery, useQueryClient} from 'react-query';
 
 const MenuIcon = (props) => <Icon {...props} name="more-vertical-outline" />;
 const PhoneIcon = (props) => <Icon {...props} name="phone-outline" />;
@@ -25,37 +27,13 @@ function FetchScreen({navigation}) {
   const toggleMenu = () => {
     setMenuVisible(!menuVisible);
   };
-
-  const renderMenuAction = () => (
-    <TopNavigationAction icon={MenuIcon} onPress={toggleMenu} />
-  );
-
-  const PirlantaOverflow = () => {
-    return (
-      <OverflowMenu
-        anchor={renderMenuAction}
-        visible={menuVisible}
-        placement="bottom end"
-        onBackdropPress={toggleMenu}>
-        <MenuItem accessoryLeft={PhoneIcon} title="Ara" />
-        <MenuItem accessoryLeft={StoreIcon} title="Mağaza" />
-        <MenuItem accessoryLeft={SaveIcon} title="Kaydet" />
-      </OverflowMenu>
-    );
-  };
+  // const {isLoading, error, data, isFetching} = useQuery('repoData', () =>
+  //   fetchData('https://api.github.com/repos/tannerlinsley/react-query'),
+  // );
 
   return (
     <View style={{flex: 1, padding: 24, margin: 10}}>
       <Text>Magaza?</Text>
-      {/* <List styl ItemSeparatorComponent={Divider}></List> */}
-      <ListItem
-        style={{borderRadius: 5}}
-        onLongPress={() => setVisible(true)}
-        title="Magaza: Alacam | Adet: 12 | Karat: 0.5"
-        description="EMERALD - S - I2 - GOOD - GIA"
-        accessoryRight={PirlantaOverflow}
-        accessoryLeft={() => <Text category="h6">50$</Text>}
-      />
     </View>
   );
 }

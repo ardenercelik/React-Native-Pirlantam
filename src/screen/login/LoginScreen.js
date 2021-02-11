@@ -7,7 +7,6 @@ import {useForm, Controller} from 'react-hook-form';
 import auth from '@react-native-firebase/auth';
 import {LoginContext} from '../../context/LoginContext';
 import {isFirstTime} from '../../helper/login';
-
 const phoneRegex = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
 
 const schema = yup.object().shape({

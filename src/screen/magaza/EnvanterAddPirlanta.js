@@ -8,19 +8,24 @@ import {
   colorsArray,
   certsArray,
   BASE_URL,
+  typesMap,
+  colorsMap,
+  claritiesMap,
+  cutsMap,
+  certsMap,
 } from '../../constants';
 import TopModelNav from '../../compontent/SelectComponent/TopModelNav';
 import {SelectQuery} from '../../compontent/SelectComponent/SelectStatus';
 import * as yup from 'yup';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {useForm, Controller} from 'react-hook-form';
-import {returnStringFromArray} from '../../helper/validation';
 import {axiosPost} from '../../helper/axios';
 import {
   actionsEnum,
   initialPostState,
   postPirlantaReducer,
 } from '../../hooks/PostActions';
+import {successNotification, msg} from '../../helper/notification';
 const schema = yup.object().shape({
   carat: yup.number().positive().max(4).required(),
   adet: yup.number().positive().required(),
@@ -43,23 +48,29 @@ export const EnvanterAddPirlanta = ({route, navigation}) => {
   const {control, handleSubmit, errors} = useForm({
     resolver: yupResolver(schema),
   });
+  // useEffect(() => {
+  //   route.params.auto(false);
+  // }, []);
 
   const onSubmit = async (data) => {
-    params = {
-      color: returnStringFromArray(state.color, colorsArray),
-      type: returnStringFromArray(state.types, typesArray),
-      cut: returnStringFromArray(state.cut, cutsArray),
-      cert: returnStringFromArray(state.cert, certsArray),
-      clarity: returnStringFromArray(state.clarity, claritiesArray),
+    const params = {
+      color: colorsMap[state.color] ?? '',
+      type: typesMap[state.types] ?? '',
+      cut: cutsMap[state.cut] ?? '',
+      cert: certsMap[state.cert] ?? '',
+      clarity: claritiesMap[state.clarity] ?? '',
       adet: data.adet,
       carat: data.carat,
       price: data.price,
       magazaId: route.params.magazaId,
     };
+
+    console.log(state.state);
     const url = `${BASE_URL}/pirlantas`;
     await axiosPost(url, params, route.params.token);
     route.params.search();
     navigation.goBack();
+    successNotification(msg.successfulAdd);
   };
 
   const PostPirlantaButton = () => (

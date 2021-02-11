@@ -3,7 +3,8 @@ import {Icon, Layout, Menu, MenuItem, Text} from '@ui-kitten/components';
 import {StyleSheet, View} from 'react-native';
 import {LoginContext} from '../../context/LoginContext';
 import {signOut} from '../../helper/login';
-
+import AreYouSureModal, {modalMsg} from '../../compontent/AreYouSure';
+import {successNotification, msg} from '../../helper/notification';
 const StarIcon = (props) => <Icon {...props} name="star" />;
 
 const ForwardIcon = (props) => <Icon {...props} name="arrow-ios-forward" />;
@@ -63,15 +64,32 @@ const LoggedOutMenu = ({navigation}) => {
     </React.Fragment>
   );
 };
-const LoggedInMenu = ({navigation, user, setUser, setToken}) => {
+
+const LoggedInMenu = ({user, setUser, setToken}) => {
+  const [visible, setVisible] = useState(true);
+  const onSa = (msg) => {
+    successNotification(msg);
+  };
+
   return (
     <React.Fragment>
+      <AreYouSureModal
+        visible={visible}
+        setVisible={setVisible}
+        onYes={() => {
+          signOut(user, setUser, setToken);
+          setVisible(false);
+          successNotification(msg.successLogout);
+        }}
+        onNo={() => setVisible(false)}
+        text={<Text>{modalMsg.logout}</Text>}
+      />
       <View style={styles.container}>
         <View style={styles.menuGroupContainer}>
           <Menu style={styles.menu}>
             <MenuItem
               accessoryRight={ForwardIcon}
-              onPress={() => signOut(user, setUser, setToken)}
+              onPress={() => setVisible(true)}
               accessoryLeft={LoginIcon}
               title="Çıkış Yap"
             />
@@ -80,8 +98,16 @@ const LoggedInMenu = ({navigation, user, setUser, setToken}) => {
         <StyledText>Genel</StyledText>
         <View style={styles.menuGroupContainer}>
           <Menu style={styles.menu}>
-            <ArrowMenuItem accessoryLeft={StarIcon} title="Favorilerim" />
-            <ArrowMenuItem accessoryLeft={HelpIcon} title="Yardım" />
+            <ArrowMenuItem
+              onPress={() => onSa('erfdg')}
+              accessoryLeft={StarIcon}
+              title="Favorilerim"
+            />
+            <ArrowMenuItem
+              onPress={() => onSa('123')}
+              accessoryLeft={HelpIcon}
+              title="Yardım"
+            />
           </Menu>
         </View>
         <StyledText>Dil</StyledText>

@@ -10,25 +10,24 @@ function LoginContextProvider(props) {
   const [magazaLoading, setMagazaLoading] = useState(false);
 
   useEffect(() => {
-    const getJwt = async (user) => {
+    const getJwt = async () => {
       const cuser = await auth().currentUser;
       setUser(cuser);
-      let jwtToken = await auth().onAuthStateChanged(function (user) {
+      let jwtToken = auth().onAuthStateChanged(async function (user) {
         if (user) {
-          user.getIdToken().then(function (idToken) {
+          await user.getIdToken().then(function (idToken) {
             setToken(idToken); // It shows the Firebase token now
             return idToken;
           });
         }
       });
-      return jwtToken;
     };
     getJwt(user);
   }, []);
-
   useEffect(() => {
     console.log('id token: ' + token);
   }, [token]);
+
   return (
     // new
     <LoginContext.Provider

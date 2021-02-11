@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 
 import axios from 'axios';
-import axiosRetry from 'axios-retry';
 
 //input olarak search geliyor. search false arama yapmıyor, bir şey ile search true olduğunda çalışır. useeffect ile search false yapmak lazım dış fonksiyonda.
 //asenkron olarak çekiyor input search: bool url:çekeceğinurl
@@ -16,9 +15,6 @@ const useAxiosFetch = (search, url, token, auto) => {
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const [loading, setLoading] = useState(true);
-
-  //console.log('search: ' + search);
-  //console.log(data);
   useEffect(() => {
     async function fetchData(source, unmounted, idToken) {
       console.log('query: ' + url);
@@ -28,6 +24,7 @@ const useAxiosFetch = (search, url, token, auto) => {
           headers: {
             Authorization: `Bearer ${idToken}`,
           },
+          timeout: 1000,
         })
         .then((a) => {
           if (!unmounted) {
@@ -64,3 +61,13 @@ const useAxiosFetch = (search, url, token, auto) => {
 };
 
 export default useAxiosFetch;
+
+async function fetchData(url, idToken) {
+  console.log('query: ' + url);
+  axios.get(url, {
+    headers: {
+      Authorization: `Bearer ${idToken}`,
+    },
+    timeout: 1000,
+  });
+}

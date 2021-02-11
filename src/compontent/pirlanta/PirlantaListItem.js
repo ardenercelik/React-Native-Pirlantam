@@ -3,10 +3,9 @@ import {ListItem, Text} from '@ui-kitten/components';
 import PirlantaOverflow from './PirlantaOverflowMenu';
 
 function PirlantaListItem({item, index, navigation}) {
-  console.log(item.id);
-
   return (
     <ListItem
+      key={item.id}
       style={{borderRadius: 5}}
       title={`Magaza: ${item.magaza.name} | Adet: ${item.adet} | Karat: ${item.carat}`}
       description={`${item.type} - ${item.color} - ${item.clarity} - ${item.cut} - ${item.cert}`}
