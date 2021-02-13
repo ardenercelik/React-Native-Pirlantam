@@ -1,6 +1,5 @@
-import {Text, Button} from '@ui-kitten/components';
 import * as React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import LoginStack from '../navigation/LoginStack';
 
 function LoginScreen() {
