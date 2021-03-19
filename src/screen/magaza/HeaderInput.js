@@ -6,7 +6,7 @@ import * as yup from 'yup';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {phoneRegex} from '../../helper/validation';
 import {LoginContext} from '../../context/LoginContext';
-import {BASE_URL} from '../../constants';
+import {URLS} from '../../constants';
 import {axiosPut} from '../../helper/axios';
 import {msg, successNotification} from '../../helper/notification';
 
@@ -39,7 +39,7 @@ const HeaderInput = ({route, navigation}) => {
       magazaId: route.params.magazaId,
       uid: user.uid,
     };
-    const url = `${BASE_URL}/magazas/${route.params.magazaId}`;
+    const url = `${URLS.PUT_MAGAZA}/${route.params.magazaId}`;
     await axiosPut(url, putData, token);
     route.params.search();
     navigation.goBack();

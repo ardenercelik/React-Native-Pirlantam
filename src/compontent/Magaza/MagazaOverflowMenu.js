@@ -8,12 +8,10 @@ import {
   TopNavigationAction,
   Text,
 } from '@ui-kitten/components';
-import {BASE_URL} from '../../constants';
+import {URLS} from '../../constants';
 import {deleteItem} from '../../helper/axios';
 import AreYouSureModal, {modalMsg} from '../AreYouSure';
 import {msg, successNotification} from '../../helper/notification';
-
-const DELETE_URL = `${BASE_URL}/pirlantas/`;
 
 const PhoneIcon = (props) => <Icon {...props} name="phone-outline" />;
 const SaveIcon = (props) => <Icon {...props} name="star-outline" />;
@@ -32,14 +30,14 @@ const returnPhoneNumberForPlatform = (number) => {
 //emin misiniz ekle
 //düzelt, düzelte bide sıfırla ekle
 const MagazaOwnerMenu = ({pirlantaId, search, token}) => {
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
   return (
     <React.Fragment>
       <AreYouSureModal
         visible={visible}
         setVisible={setVisible}
         onYes={async () => {
-          const url = DELETE_URL + pirlantaId;
+          const url = URLS.DELETE_PIRLANTA + pirlantaId;
           await deleteItem(url, token);
           setVisible(false);
           search();

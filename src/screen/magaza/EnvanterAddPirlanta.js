@@ -7,12 +7,12 @@ import {
   claritiesArray,
   colorsArray,
   certsArray,
-  BASE_URL,
   typesMap,
   colorsMap,
   claritiesMap,
   cutsMap,
   certsMap,
+  URLS,
 } from '../../constants';
 import TopModelNav from '../../compontent/SelectComponent/TopModelNav';
 import {SelectQuery} from '../../compontent/SelectComponent/SelectStatus';
@@ -66,7 +66,7 @@ export const EnvanterAddPirlanta = ({route, navigation}) => {
     };
 
     console.log(state.state);
-    const url = `${BASE_URL}/pirlantas`;
+    const url = URLS.POST_PIRLANTA;
     await axiosPost(url, params, route.params.token);
     route.params.search();
     navigation.goBack();

@@ -9,16 +9,19 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {LoginContextProvider} from './context/LoginContext';
 import {NotifierWrapper} from 'react-native-notifier';
 import {QueryClient, QueryClientProvider, useQuery} from 'react-query';
-
+import NoData from './assets/no-data.svg';
 export const Stack = createStackNavigator();
 const queryClient = new QueryClient();
-
+//validasyon bozuk ikisi de yanıyo
+//Performance Monitoring
+//Crashlytics
+//Storage
 export default App = () => {
   return (
     <>
       <LoginContextProvider>
-        <IconRegistry icons={EvaIconsPack} />
-        <ApplicationProvider {...eva} theme={{...eva.light}}>
+        <IconRegistry icons={[EvaIconsPack, MyIconPack]} />
+        <ApplicationProvider {...eva} theme={{...eva.light, ...theme}}>
           <QueryClientProvider client={queryClient}>
             <NotifierWrapper>
               <AppNavigator />
@@ -28,4 +31,15 @@ export default App = () => {
       </LoginContextProvider>
     </>
   );
+};
+
+const MyIconProvider = (source) => ({
+  toReactElement: ({animation, ...props}) => <NoData />,
+});
+
+const MyIconPack = {
+  name: 'my-icon',
+  icons: {
+    'no-data': <MyIconProvider />,
+  },
 };

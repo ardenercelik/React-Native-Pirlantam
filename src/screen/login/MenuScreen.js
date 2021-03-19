@@ -66,7 +66,7 @@ const LoggedOutMenu = ({navigation}) => {
 };
 
 const LoggedInMenu = ({user, setUser, setToken}) => {
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
   const onSa = (msg) => {
     successNotification(msg);
   };

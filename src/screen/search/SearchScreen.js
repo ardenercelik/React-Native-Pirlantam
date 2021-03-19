@@ -1,12 +1,12 @@
 import React, {useState, useEffect, useReducer} from 'react';
-import {Button, Text, List, Divider} from '@ui-kitten/components';
+import {Button, Text, List, Divider, Layout} from '@ui-kitten/components';
 import {
-  QUERY_URL,
   typesMap,
   colorsMap,
   claritiesMap,
   cutsMap,
   certsMap,
+  URLS,
 } from '../../constants';
 import {View, StyleSheet} from 'react-native';
 import SelectModal from '../../compontent/pirlanta/SelectModal';
@@ -14,16 +14,18 @@ import PirlantaListItem from '../../compontent/pirlanta/PirlantaListItem';
 import {searchReducer, initialSearchState} from '../../hooks/SearchActions';
 import {useQuery} from 'react-query';
 import {fetchData} from '../../helper/axios';
-
+import {SearchButtonGroup} from '../../compontent/SelectComponent/SearchButtonGroup';
+import NoData from '../../assets/no-data.svg';
 //TODO
 //input olarak search geliyor. search false arama yapmıyor, bir şey ile search true olduğunda çalışır. useeffect ile search false yapmak lazım dış fonksiyonda.
 // carat min-max değerleri al x
 // Magaza Sayfalı ekle, Pirlantanın fiyat propu da olsun. x
 // Arkaplanda yükleniyor koy, sonuçlardan verileri alıp güzel bir liste olarak ver //array lookup işlemi constant üzerinden yapılsa daha iyi, api servise get post put ekle, cevapda mağaza da dönsün, sırala karat artan azala, magaza sayfası, login
+const NoDataIcon = () => (props) => (
+  <Icon {...props} name="no-data" pack="my-icon" />
+);
 
 const SearchScreen = ({navigation}) => {
-  //const queryClient = useQueryClient();
-
   //seçilen şeylerin stateleri
   const [state, dispatch] = useReducer(searchReducer, initialSearchState);
   //model gözüküyor mu gözükmüyor mu, tepedi butonla ara butonu da bakıyor
@@ -41,7 +43,7 @@ const SearchScreen = ({navigation}) => {
 
   //seçilen statelerer göre query oluşturuyor
   const query = new URLSearchParams(params);
-  const url = QUERY_URL + query;
+  const url = URLS.GET_PIRLANTA + query;
 
   const {isLoading: loading, status, data, refetch} = useQuery(
     'pirlantalar',
@@ -63,15 +65,29 @@ const SearchScreen = ({navigation}) => {
   return (
     <React.Fragment>
       <View style={styles.container}>
-        <Button
+        <SearchButtonGroup />
+        {/* <Button
           onPress={() => {
             setMVisible(true);
           }}>
           Menü Aç
-        </Button>
+        </Button> */}
 
         {data == null ? (
-          <Text key="text1">Lütfen Arama yapın</Text>
+          <View
+            style={{
+              height: '90%',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <NoData />
+            <Button
+              style={{width: '30%'}}
+              appearance="outline"
+              status="outline">
+              Arama Yap!
+            </Button>
+          </View>
         ) : (
           [
             loading ? (
@@ -114,7 +130,7 @@ const SearchScreen = ({navigation}) => {
 
 const styles = StyleSheet.create({
   container: {
-    margin: 15,
+    margin: 0,
   },
 });
 

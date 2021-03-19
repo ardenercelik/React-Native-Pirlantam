@@ -1,23 +1,32 @@
 import React from 'react';
-import {Text, ListItem, Icon, Divider, Input} from '@ui-kitten/components';
+import {
+  Text,
+  ListItem,
+  Icon,
+  Divider,
+  Input,
+  Layout,
+  Avatar,
+} from '@ui-kitten/components';
 import {View, StyleSheet} from 'react-native';
 
 const PhoneIcon = (props) => <Icon {...props} name="smartphone-outline" />;
 const MailIcon = (props) => <Icon {...props} name="email-outline" />;
 const Header = ({data, children}) => (
-  <View>
-    <View>
-      <View style={styles.headerContainer}>
+  <Layout>
+    <Layout>
+      <Layout level="1" style={styles.headerContainer}>
+        <Avatar size="giant" source={require('../../../assets/tst.png')} />
         <Text category="h4">{data.name}</Text>
         {children}
-      </View>
+      </Layout>
       <Divider />
       <ListItem title={data.number} accessoryLeft={PhoneIcon}></ListItem>
       <Divider />
       <ListItem title={data.adres} accessoryLeft={MailIcon}></ListItem>
       <Divider />
-    </View>
-  </View>
+    </Layout>
+  </Layout>
 );
 
 const styles = StyleSheet.create({

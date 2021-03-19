@@ -4,13 +4,11 @@ import {View, StyleSheet} from 'react-native';
 import {LoginContext} from '../../context/LoginContext';
 import Envanter from '../../compontent/Magaza/Envanter';
 import Header from '../../compontent/Magaza/Header';
-import {BASE_URL} from '../../constants';
+import {URLS} from '../../constants';
 import ModalSpinner from '../../compontent/ModalSpinner';
 import {magazaScreenNavs} from '../../navigation/Navs';
 import {useQuery} from 'react-query';
 import {fetchData, deleteItem} from '../../helper/axios';
-
-const QUERY_URL = `${BASE_URL}/magazas/query?uid=`;
 
 const PlusIcon = (props) => <Icon {...props} name="plus-square-outline" />;
 const EditIcon = (props) => <Icon {...props} name="edit-2-outline" />;
@@ -28,12 +26,11 @@ const EnvanterAddButton = ({navigation, magazaId, search, token}) => (
     accessoryLeft={PlusIcon}
   />
 );
-const MagazaLoggedInScreen = ({navigation}) => {
+export const MagazaLoggedInScreen = ({navigation}) => {
   const {token, user, setUser, magazaLoading} = useContext(LoginContext);
 
-  const url = QUERY_URL + user.uid;
+  const url = URLS.GET_MAGAZA_DATA_FROM_UID + user.uid;
   //data buradan geliyör custom
-  const [visible, setVisible] = useState(true);
   const {isLoading: loading, data, refetch, error: errorMessage} = useQuery(
     'magaza',
     () => fetchData(url),
@@ -54,13 +51,13 @@ const MagazaLoggedInScreen = ({navigation}) => {
   //magaza put, pirlanta sil, pirlanta ekle güvenlik ekle, pırlanta ekleme ekle, db postgres yap, paging ekle, giriş yapma çıkış yapma düzenle, giriş yapma işlemini güzelleştir user otomatik oluşsun
   //giriş yaptıktan sonra yönlendir. tamam
   //aramada kendi olmayanı returnle,
-  //db paging, db connection pool
+  //db paging, db connection pool x
   //register olurken uygulamayı kapasa, internet gitse?
-  //feedback react-native-notifier
+  //feedback react-native-notifier x
 
   //magaza ekranı
   //async storage - offline case - react-native-offline
-  //liste lookupları dict çevir
+  //liste lookupları dict çevir x
 
   //logging
   //dizayn
@@ -111,7 +108,7 @@ const MagazaLoggedInScreen = ({navigation}) => {
   );
 };
 
-const MagazaLoggedOutScreen = () => {
+export const MagazaLoggedOutScreen = () => {
   return (
     <View
       style={{

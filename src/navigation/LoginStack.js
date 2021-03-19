@@ -14,7 +14,7 @@ const LoginStack = () => {
       <Stack.Screen name={loginStackNavs.Menu} component={MenuScreen} />
       <Stack.Screen name={loginStackNavs.Login} component={Login} />
       <Stack.Screen name={loginStackNavs.Register} component={Register} />
-      <Stack.Screen name="Verify" component={Verify} />
+      <Stack.Screen name={loginStackNavs.Verify} component={Verify} />
     </Stack.Navigator>
   );
 };

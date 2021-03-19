@@ -100,6 +100,14 @@ export const certsArray = ['GIA', 'HRD'];
 
 export const certsMap = {1: 'GIA', 2: 'HRD'};
 
-export const QUERY_URL = 'http://192.168.0.106:5000/api/pirlantas/query?';
-
 export const BASE_URL = 'http://192.168.0.106:5000/api';
+
+export const URLS = {
+  GET_MAGAZA_FROM_MAGAZAID: `${BASE_URL}/magazas/`,
+  GET_MAGAZA_DATA_FROM_UID: `${BASE_URL}/magazas/query?uid=`,
+  GET_MAGAZA: `${BASE_URL}/magazas?pageNumber=1&pageSize=10`,
+  PUT_MAGAZA: `${BASE_URL}/magazas`,
+  GET_PIRLANTA: `${BASE_URL}/pirlantas/query?`,
+  DELETE_PIRLANTA: `${BASE_URL}/pirlantas/`,
+  POST_PIRLANTA: `${BASE_URL}/pirlantas`,
+};

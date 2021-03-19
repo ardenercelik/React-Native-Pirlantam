@@ -2,10 +2,11 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {BottomNavigation, BottomNavigationTab} from '@ui-kitten/components';
-import FetchScreen from '../screen/PirlantaScreen';
 import LoginScreen from '../screen/LoginScreen';
 import SearchScreenStack from '../screen/SearchScreenStack';
 import MagazaScreenStack from '../screen/MagazaScreenStack';
+import MagazaSearchScreen from '../screen/MagazaSearchScreen';
+
 const {Navigator, Screen} = createBottomTabNavigator();
 
 const BottomTabBar = ({navigation, state}) => (
@@ -19,7 +20,16 @@ const BottomTabBar = ({navigation, state}) => (
   </BottomNavigation>
 );
 
-const TabNavigator = () => (
+const LoggedInTabNavigator = () => (
+  <Navigator tabBar={(props) => <BottomTabBar {...props} />}>
+    <Screen name="Ara" component={SearchScreenStack} />
+    <Screen name="Ana Ekran" component={MagazaSearchScreen} />
+    <Screen name="Magaza" component={MagazaScreenStack} />
+    <Screen name="Profil" component={LoginScreen} />
+  </Navigator>
+);
+
+const LoggedOutTabNavigator = () => (
   <Navigator tabBar={(props) => <BottomTabBar {...props} />}>
     <Screen name="Ara" component={SearchScreenStack} />
     <Screen name="Ana Ekran" component={FetchScreen} />
@@ -30,6 +40,6 @@ const TabNavigator = () => (
 
 export const AppNavigator = () => (
   <NavigationContainer>
-    <TabNavigator />
+    <LoggedInTabNavigator />
   </NavigationContainer>
 );

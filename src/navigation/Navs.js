@@ -8,6 +8,7 @@ export const loginStackNavs = {
   Menu: 'Menu',
   Login: 'Login',
   Register: 'Register',
+  Verify: 'Verify',
 };
 export const searchStackNavs = {
   Search: 'Search',
