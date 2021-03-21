@@ -1,0 +1,19 @@
+{
+  "components": {
+    "Button": {
+      "meta": {},
+      "appearances": {}
+    },
+    "Card": {
+      "meta": {},
+      "appearances": {
+        "outline": {
+          "mapping": {
+            "bodyPaddingHorizontal": 5,
+            "bodyPaddingVertical": 5
+          }
+        }
+      }
+    }
+  }
+}
