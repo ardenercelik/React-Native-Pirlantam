@@ -9,17 +9,21 @@ const Stack = createStackNavigator();
 
 const MagazaStack = () => {
   return (
-    <Stack.Navigator headerMode="none" initialRouteName="Magaza">
-      <Stack.Screen name={magazaScreenNavs.Magaza} component={MagazaScreen} />
-      <Stack.Screen
-        name={magazaScreenNavs.EditHeader}
-        component={HeaderInput}
-      />
-      <Stack.Screen
-        name={magazaScreenNavs.AddPirlanta}
-        component={EnvanterAddPirlanta}
-      />
-    </Stack.Navigator>
+    <React.Fragment>
+      <Stack.Navigator
+        headerMode="none"
+        initialRouteName={magazaScreenNavs.Magaza}>
+        <Stack.Screen name={magazaScreenNavs.Magaza} component={MagazaScreen} />
+        <Stack.Screen
+          name={magazaScreenNavs.EditHeader}
+          component={HeaderInput}
+        />
+        <Stack.Screen
+          name={magazaScreenNavs.AddPirlanta}
+          component={EnvanterAddPirlanta}
+        />
+      </Stack.Navigator>
+    </React.Fragment>
   );
 };
 

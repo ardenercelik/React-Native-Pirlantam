@@ -4,14 +4,14 @@ import {ApplicationProvider, IconRegistry} from '@ui-kitten/components';
 import {default as theme} from './theme';
 import {EvaIconsPack} from '@ui-kitten/eva-icons';
 import {AppNavigator} from './navigation/BottomTab';
-
+import 'react-native-gesture-handler';
+import {default as mapping} from './mapping.json';
 import {createStackNavigator} from '@react-navigation/stack';
 import {LoginContextProvider} from './context/LoginContext';
 import {NotifierWrapper} from 'react-native-notifier';
-import {QueryClient, QueryClientProvider, useQuery} from 'react-query';
-import NoData from './assets/no-data.svg';
+import {QueryClientProvider} from 'react-query';
+import {queryClient} from './helper/query-client';
 export const Stack = createStackNavigator();
-const queryClient = new QueryClient();
 //validasyon bozuk ikisi de yanıyo
 //Performance Monitoring
 //Crashlytics
@@ -20,8 +20,8 @@ export default App = () => {
   return (
     <>
       <LoginContextProvider>
-        <IconRegistry icons={[EvaIconsPack, MyIconPack]} />
-        <ApplicationProvider {...eva} theme={{...eva.light, ...theme}}>
+        <IconRegistry icons={[EvaIconsPack]} />
+        <ApplicationProvider {...eva} customMapping={mapping} theme={{...eva.light, ...theme}}>
           <QueryClientProvider client={queryClient}>
             <NotifierWrapper>
               <AppNavigator />
@@ -31,15 +31,4 @@ export default App = () => {
       </LoginContextProvider>
     </>
   );
-};
-
-const MyIconProvider = (source) => ({
-  toReactElement: ({animation, ...props}) => <NoData />,
-});
-
-const MyIconPack = {
-  name: 'my-icon',
-  icons: {
-    'no-data': <MyIconProvider />,
-  },
 };

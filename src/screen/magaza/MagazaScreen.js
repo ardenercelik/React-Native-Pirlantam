@@ -2,13 +2,12 @@ import React, {useEffect, useState, useContext} from 'react';
 import {Text, Button, Icon} from '@ui-kitten/components';
 import {View, StyleSheet} from 'react-native';
 import {LoginContext} from '../../context/LoginContext';
-import Envanter from '../../compontent/Magaza/Envanter';
-import Header from '../../compontent/Magaza/Header';
 import {URLS} from '../../constants';
 import ModalSpinner from '../../compontent/ModalSpinner';
 import {magazaScreenNavs} from '../../navigation/Navs';
 import {useQuery} from 'react-query';
 import {fetchData, deleteItem} from '../../helper/axios';
+import {Envanter, Header} from '../../compontent/Magaza';
 
 const PlusIcon = (props) => <Icon {...props} name="plus-square-outline" />;
 const EditIcon = (props) => <Icon {...props} name="edit-2-outline" />;
