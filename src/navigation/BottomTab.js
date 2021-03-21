@@ -2,10 +2,10 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {BottomNavigation, BottomNavigationTab} from '@ui-kitten/components';
-import LoginScreen from '../screen/LoginScreen';
-import SearchScreenStack from '../screen/SearchScreenStack';
-import MagazaScreenStack from '../screen/MagazaScreenStack';
 import MagazaSearchScreen from '../screen/MagazaSearchScreen';
+import MagazaStack from './MagazaStack';
+import LoginStack from './LoginStack';
+import SearchStack from './SearchStack';
 
 const {Navigator, Screen} = createBottomTabNavigator();
 
@@ -22,19 +22,19 @@ const BottomTabBar = ({navigation, state}) => (
 
 const LoggedInTabNavigator = () => (
   <Navigator tabBar={(props) => <BottomTabBar {...props} />}>
-    <Screen name="Ara" component={SearchScreenStack} />
+    <Screen name="Ara" component={SearchStack} />
     <Screen name="Ana Ekran" component={MagazaSearchScreen} />
-    <Screen name="Magaza" component={MagazaScreenStack} />
-    <Screen name="Profil" component={LoginScreen} />
+    <Screen name="Magaza" component={MagazaStack} />
+    <Screen name="Profil" component={LoginStack} />
   </Navigator>
 );
 
 const LoggedOutTabNavigator = () => (
   <Navigator tabBar={(props) => <BottomTabBar {...props} />}>
-    <Screen name="Ara" component={SearchScreenStack} />
+    <Screen name="Ara" component={SearchStack} />
     <Screen name="Ana Ekran" component={FetchScreen} />
-    <Screen name="Magaza" component={MagazaScreenStack} />
-    <Screen name="Profil" component={LoginScreen} />
+    <Screen name="Magaza" component={MagazaStack} />
+    <Screen name="Profil" component={LoginStack} />
   </Navigator>
 );
 

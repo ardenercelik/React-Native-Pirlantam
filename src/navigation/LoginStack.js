@@ -10,12 +10,14 @@ const Stack = createStackNavigator();
 
 const LoginStack = () => {
   return (
-    <Stack.Navigator initialRouteName={loginStackNavs.Menu}>
-      <Stack.Screen name={loginStackNavs.Menu} component={MenuScreen} />
-      <Stack.Screen name={loginStackNavs.Login} component={Login} />
-      <Stack.Screen name={loginStackNavs.Register} component={Register} />
-      <Stack.Screen name={loginStackNavs.Verify} component={Verify} />
-    </Stack.Navigator>
+    <React.Fragment>
+      <Stack.Navigator initialRouteName={loginStackNavs.Menu}>
+        <Stack.Screen name={loginStackNavs.Menu} component={MenuScreen} />
+        <Stack.Screen name={loginStackNavs.Login} component={Login} />
+        <Stack.Screen name={loginStackNavs.Register} component={Register} />
+        <Stack.Screen name={loginStackNavs.Verify} component={Verify} />
+      </Stack.Navigator>
+    </React.Fragment>
   );
 };
 
