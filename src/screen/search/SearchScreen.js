@@ -6,7 +6,7 @@ import {searchReducer, initialSearchState} from '../../hooks/SearchActions';
 import {QueryClient, useQuery} from 'react-query';
 import {fetchData} from '../../helper/axios';
 import {SelectModal, PirlantaCard, SearchButtonGroup} from '../../compontent/pirlanta';
-import {NoData} from '../../assets/icons';
+import {NotFound, Search} from '../../assets/icons';
 import {orderQueryData, queryClient} from '../../helper/query-client';
 
 const orderQueryDataAndCloseModal = (queryClient, key, setState, item, order = 'asc') => {
@@ -46,6 +46,61 @@ const SearchScreen = ({navigation}) => {
 
   const renderPirlanta = ({item, index}) => <PirlantaCard navigation={navigation} item={item} index={index} />;
 
+  const renderScreen = (data) => {
+    if (data == null) {
+      return (
+        <View
+          style={{
+            height: '90%',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <Search width={'50%'} height={'50%'} />
+          <Button
+            style={{width: '50%'}}
+            appearance="outline"
+            onPress={() => {
+              setMVisible(true);
+            }}
+            status="outline">
+            Arama Yap!
+          </Button>
+        </View>
+      );
+    } else if (data.length === 0) {
+      return (
+        <View
+          style={{
+            height: '90%',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <NotFound width={'50%'} height={'30%'} />
+          <View style={{width: '80%'}}>
+            <Text category="h4" style={{fontWeight: 'bold'}}>
+              Aramana uygun bir sonuç
+            </Text>
+            <View
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <Text style={{fontWeight: 'bold'}} category="h4">
+                bulamadık!
+              </Text>
+            </View>
+          </View>
+        </View>
+      );
+    } else {
+      return (
+        <View>
+          <List key="list" keyExtractor={(item) => item.id.toString()} data={data} renderItem={renderPirlanta} ItemSeparatorComponent={Divider} />
+        </View>
+      );
+    }
+  };
+  console.log(data);
   return (
     <React.Fragment>
       <View style={styles.container}>
@@ -58,40 +113,19 @@ const SearchScreen = ({navigation}) => {
             setSortModelVisible(true);
           }}
         />
-        {data == null ? (
+
+        {loading ? (
           <View
             style={{
               height: '90%',
               alignItems: 'center',
               justifyContent: 'center',
-            }}>
-            <NoData />
-            <Button
-              style={{width: '30%'}}
-              appearance="outline"
-              onPress={() => {
-                setMVisible(true);
-              }}
-              status="outline">
-              Arama Yap!
-            </Button>
+            }}
+            key="text">
+            <Spinner size="large" />
           </View>
         ) : (
-          [
-            loading ? (
-              <View
-                style={{
-                  height: '90%',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-                key="text">
-                <Spinner size="large" />
-              </View>
-            ) : (
-              <List key="list" keyExtractor={(item) => item.id.toString()} data={data} renderItem={renderPirlanta} ItemSeparatorComponent={Divider} />
-            ),
-          ]
+          renderScreen(data)
         )}
       </View>
 

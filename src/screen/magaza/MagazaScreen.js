@@ -30,14 +30,10 @@ export const MagazaLoggedInScreen = ({navigation}) => {
 
   const url = URLS.GET_MAGAZA_DATA_FROM_UID + user.uid;
   //data buradan geliyör custom
-  const {isLoading: loading, data, refetch, error: errorMessage} = useQuery(
-    'magaza',
-    () => fetchData(url),
-    {
-      enabled: false,
-      token: token,
-    },
-  );
+  const {isLoading: loading, data, refetch, error: errorMessage} = useQuery('magaza', () => fetchData(url), {
+    enabled: false,
+    token: token,
+  });
 
   useEffect(() => {
     refetch();
@@ -46,17 +42,6 @@ export const MagazaLoggedInScreen = ({navigation}) => {
   useEffect(() => {
     console.log('Magaza Logged In Error:' + errorMessage);
   }, [errorMessage]);
-  //TODO
-  //magaza put, pirlanta sil, pirlanta ekle güvenlik ekle, pırlanta ekleme ekle, db postgres yap, paging ekle, giriş yapma çıkış yapma düzenle, giriş yapma işlemini güzelleştir user otomatik oluşsun
-  //giriş yaptıktan sonra yönlendir. tamam
-  //aramada kendi olmayanı returnle,
-  //db paging, db connection pool x
-  //register olurken uygulamayı kapasa, internet gitse?
-  //feedback react-native-notifier x
-
-  //magaza ekranı
-  //async storage - offline case - react-native-offline
-  //liste lookupları dict çevir x
 
   //logging
   //dizayn
@@ -87,14 +72,7 @@ export const MagazaLoggedInScreen = ({navigation}) => {
             </Header>
             <Envanter
               status={'owner'}
-              button={
-                <EnvanterAddButton
-                  magazaId={data?.magazaId}
-                  search={() => refetch()}
-                  token={token}
-                  navigation={navigation}
-                />
-              }
+              button={<EnvanterAddButton magazaId={data?.magazaId} search={() => refetch()} token={token} navigation={navigation} />}
               search={() => refetch()}
               token={token}
               data={data?.pirlantalar}></Envanter>
@@ -124,15 +102,7 @@ export const MagazaLoggedOutScreen = () => {
 //logout olup başka user geçince error veriyor
 const MagazaScreen = ({navigation}) => {
   const {user, magazaLoading} = useContext(LoginContext);
-  return (
-    <View>
-      {user && !magazaLoading ? (
-        <MagazaLoggedInScreen navigation={navigation} />
-      ) : (
-        <MagazaLoggedOutScreen />
-      )}
-    </View>
-  );
+  return <View>{user && !magazaLoading ? <MagazaLoggedInScreen navigation={navigation} /> : <MagazaLoggedOutScreen />}</View>;
 };
 
 const styles = StyleSheet.create({

@@ -10,5 +10,7 @@ import Radiant from './radiant.svg';
 import Round from './round.svg';
 import SquareRadiant from './square-radiant.svg';
 import NoData from './no-data.svg';
+import NotFound from './not-found.svg';
+import Search from './search.svg';
 
-export {Asscher, Cushion, Emerald, Heart, Markiz, Oval, Pear, Princess, Radiant, Round, SquareRadiant, NoData};
+export {Asscher, Cushion, Emerald, Heart, Markiz, Oval, Pear, Princess, Radiant, Round, SquareRadiant, NoData, NotFound, Search};
