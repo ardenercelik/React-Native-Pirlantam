@@ -19,6 +19,7 @@ const EnvanterAddButton = ({navigation, magazaId, search, token}) => (
         magazaId: magazaId,
         token: token,
         search: search,
+        action: 'post',
       });
     }}
     size="small"
@@ -72,6 +73,7 @@ export const MagazaLoggedInScreen = ({navigation}) => {
             </Header>
             <Envanter
               status={'owner'}
+              navigation={navigation}
               button={<EnvanterAddButton magazaId={data?.magazaId} search={() => refetch()} token={token} navigation={navigation} />}
               search={() => refetch()}
               token={token}
@@ -87,13 +89,7 @@ export const MagazaLoggedInScreen = ({navigation}) => {
 
 export const MagazaLoggedOutScreen = () => {
   return (
-    <View
-      style={{
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: '100%',
-        height: '100%',
-      }}>
+    <View style={styles.magazaLoggedOutScreenContainer}>
       <Text>Magaza yok</Text>
     </View>
   );
@@ -109,7 +105,12 @@ const styles = StyleSheet.create({
   topContainer: {
     flexDirection: 'column',
     justifyContent: 'space-between',
-    margin: 15,
+  },
+  magazaLoggedOutScreenContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    height: '100%',
   },
 });
 export default MagazaScreen;

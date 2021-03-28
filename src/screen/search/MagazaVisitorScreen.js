@@ -6,6 +6,7 @@ import Header from '../../compontent/Magaza/Header';
 import {URLS} from '../../constants';
 import {useQuery} from 'react-query';
 import {fetchData} from '../../helper/axios';
+import {EnvanterVisitor} from '../../compontent/Magaza';
 
 const MagazaVisitorScreen = ({route}) => {
   const [search, setSearch] = useState(true);
@@ -14,13 +15,9 @@ const MagazaVisitorScreen = ({route}) => {
 
   const url = URLS.GET_MAGAZA_FROM_MAGAZAID + magazaId;
   //data buradan geliyör custom
-  const {status, data, refetch} = useQuery(
-    'magazaVisitor',
-    () => fetchData(url),
-    {
-      enabled: true,
-    },
-  );
+  const {status, data, refetch} = useQuery('magazaVisitor', () => fetchData(url), {
+    enabled: true,
+  });
   return (
     <React.Fragment>
       {status === 'success' ? (
@@ -32,11 +29,7 @@ const MagazaVisitorScreen = ({route}) => {
                 number: data.number,
                 adres: data.adres,
               }}></Header>
-            <Envanter
-              phoneNumber={data.number}
-              status={'visitor'}
-              data={data.pirlantalar}
-            />
+            <EnvanterVisitor phoneNumber={data.number} data={data.pirlantalar} />
           </View>
         </>
       ) : (
@@ -52,7 +45,6 @@ const styles = StyleSheet.create({
   topContainer: {
     flexDirection: 'column',
     justifyContent: 'space-between',
-    margin: 15,
   },
 });
 export default MagazaVisitorScreen;
