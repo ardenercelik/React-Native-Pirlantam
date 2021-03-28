@@ -1,17 +1,13 @@
 import React, {useState} from 'react';
 import {Linking} from 'react-native';
 
-import {
-  Icon,
-  OverflowMenu,
-  MenuItem,
-  TopNavigationAction,
-  Text,
-} from '@ui-kitten/components';
+import {Icon, OverflowMenu, MenuItem, TopNavigationAction, Text, Layout} from '@ui-kitten/components';
 import {URLS} from '../../constants';
 import {deleteItem} from '../../helper/axios';
 import AreYouSureModal, {modalMsg} from '../AreYouSure';
 import {msg, successNotification} from '../../helper/notification';
+import {magazaScreenNavs} from '../../navigation/Navs';
+import {generatePrevState} from '../../hooks/PostActions';
 
 const PhoneIcon = (props) => <Icon {...props} name="phone-outline" />;
 const SaveIcon = (props) => <Icon {...props} name="star-outline" />;
@@ -29,7 +25,7 @@ const returnPhoneNumberForPlatform = (number) => {
 //TODO
 //emin misiniz ekle
 //düzelt, düzelte bide sıfırla ekle
-const MagazaOwnerMenu = ({pirlantaId, search, token}) => {
+const MagazaOwnerMenu = ({pirlantaId, search, token, item, navigation, closeMenu}) => {
   const [visible, setVisible] = useState(false);
   return (
     <React.Fragment>
@@ -49,7 +45,16 @@ const MagazaOwnerMenu = ({pirlantaId, search, token}) => {
 
       <MenuItem
         onPress={() => {
-          console.log('edit');
+          navigation.navigate(magazaScreenNavs.AddPirlanta, {
+            magazaId: item.magazaId,
+            pirlantaId: pirlantaId,
+            token: token,
+            search: search,
+            prevState: generatePrevState(item),
+            action: 'put',
+          });
+          // overflow menusunu kapatıyor.
+          closeMenu();
         }}
         accessoryLeft={EditIcon}
         title="Düzenle"
@@ -67,49 +72,39 @@ const MagazaOwnerMenu = ({pirlantaId, search, token}) => {
 
 const MagazaVisitorMenu = ({phoneNumber}) => (
   <React.Fragment>
-    <MenuItem
-      accessoryLeft={PhoneIcon}
-      title="Ara"
-      onPress={() => Linking.openURL(returnPhoneNumberForPlatform(phoneNumber))}
-    />
+    <MenuItem accessoryLeft={PhoneIcon} title="Ara" onPress={() => Linking.openURL(returnPhoneNumberForPlatform(phoneNumber))} />
     <MenuItem accessoryLeft={SaveIcon} title="Kaydet" />
   </React.Fragment>
 );
 
-const MagazaOverflowMenu = ({
-  status,
-  phoneNumber,
-  pirlantaId,
-  search,
-  token,
-  setVisible,
-}) => {
-  const renderMenuAction = () => (
-    <TopNavigationAction icon={MenuIcon} onPress={toggleMenu} />
-  );
+export const MagazaOwnerOverflowMenu = ({pirlantaId, search, token, setVisible, navigation, item}) => {
+  const renderMenuAction = () => <TopNavigationAction icon={MenuIcon} onPress={toggleMenu} />;
   const [menuVisible, setMenuVisible] = React.useState(false);
   const toggleMenu = () => {
     setMenuVisible(!menuVisible);
   };
 
   return (
-    <OverflowMenu
-      setVisible={setVisible}
-      anchor={renderMenuAction}
-      visible={menuVisible}
-      placement="bottom end"
-      onBackdropPress={toggleMenu}>
-      {status === 'visitor' ? (
-        <MagazaVisitorMenu phoneNumber={phoneNumber} />
-      ) : (
-        <MagazaOwnerMenu
-          search={search}
-          token={token}
-          pirlantaId={pirlantaId}
-          setVisible={setVisible}
-        />
-      )}
-    </OverflowMenu>
+    <Layout>
+      <OverflowMenu setVisible={setVisible} anchor={renderMenuAction} visible={menuVisible} placement="bottom end" onBackdropPress={toggleMenu}>
+        <MagazaOwnerMenu closeMenu={() => setMenuVisible(false)} item={item} search={search} token={token} pirlantaId={pirlantaId} setVisible={setVisible} navigation={navigation} />
+      </OverflowMenu>
+    </Layout>
   );
 };
-export default MagazaOverflowMenu;
+
+export const MagazaVisitorOverflowMenu = ({phoneNumber, setVisible}) => {
+  const renderMenuAction = () => <TopNavigationAction icon={MenuIcon} onPress={toggleMenu} />;
+  const [menuVisible, setMenuVisible] = React.useState(false);
+  const toggleMenu = () => {
+    setMenuVisible(!menuVisible);
+  };
+
+  return (
+    <Layout>
+      <OverflowMenu setVisible={setVisible} anchor={renderMenuAction} visible={menuVisible} placement="bottom end" onBackdropPress={toggleMenu}>
+        <MagazaVisitorMenu phoneNumber={phoneNumber} />
+      </OverflowMenu>
+    </Layout>
+  );
+};
