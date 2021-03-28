@@ -1,19 +1,13 @@
 import React from 'react';
-import {Card, Icon, Layout, Text, useStyleSheet, withStyles} from '@ui-kitten/components';
-import PirlantaOverflow from './PirlantaOverflowMenu';
 import {View, StyleSheet} from 'react-native';
 import {returnIcon} from '../../helper/returnIcon';
-import {default as theme} from '../../theme.json';
+import {Card, Layout} from '@ui-kitten/components';
+import {Text} from '@ui-kitten/components';
+import {StyledText} from '../StyledText';
 
-export const PirlantaCard = ({item, index, navigation}) => {
+export const MagazaCard = ({item, overflow}) => {
   const Footer = () => (
-    <View
-      style={{
-        justifyContent: 'flex-end',
-        flexDirection: 'row',
-        paddingVertical: 1,
-        marginRight: '5%',
-      }}>
+    <View style={styles.footerContainer}>
       <Text category="s1" style={styles.priceFont}>
         {item.price}$
       </Text>
@@ -24,20 +18,10 @@ export const PirlantaCard = ({item, index, navigation}) => {
   return (
     <Layout style={{marginHorizontal: '2%'}}>
       <Card>
-        <Layout
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}>
-          <Layout
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              marginVertical: '2%',
-            }}>
+        <Layout style={styles.contentContainer}>
+          <Layout style={styles.contentContainer2}>
             <PirlantaIcon width={50} height={50} />
-            <Layout style={{marginHorizontal: '5%'}}>
+            <Layout style={styles.textContainer}>
               <Text category="p1" style={styles.mainColor}>
                 <StyledMiddleDot />
                 {` ${item.type} `}
@@ -56,9 +40,7 @@ export const PirlantaCard = ({item, index, navigation}) => {
               </Text>
             </Layout>
           </Layout>
-          <Layout>
-            <PirlantaOverflow magazaId={item.magaza?.magazaId} number={item.magaza?.numara} navigation={navigation} />
-          </Layout>
+          <Layout>{overflow}</Layout>
         </Layout>
         <Layout>
           <Footer />
@@ -74,15 +56,30 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  footerContainer: {
+    justifyContent: 'flex-end',
+    flexDirection: 'row',
+    paddingVertical: 1,
+    marginRight: '5%',
+  },
+  contentContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  contentContainer2: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: '2%',
+  },
+  textContainer: {marginHorizontal: '5%'},
   middleDot: {
     color: '#ff5600',
   },
   mainColor: {
-    color: theme['color-primary-500'],
     fontWeight: 'bold',
   },
   priceFont: {
-    color: theme['color-primary-500'],
     fontWeight: 'bold',
   },
 });
