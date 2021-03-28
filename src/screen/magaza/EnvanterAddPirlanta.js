@@ -1,31 +1,16 @@
 import React, {useEffect, useReducer, useContext} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Icon, Button, Input, Text} from '@ui-kitten/components';
-import {
-  typesArray,
-  cutsArray,
-  claritiesArray,
-  colorsArray,
-  certsArray,
-  typesMap,
-  colorsMap,
-  claritiesMap,
-  cutsMap,
-  certsMap,
-  URLS,
-} from '../../constants';
+import {typesArray, cutsArray, claritiesArray, colorsArray, certsArray, typesMap, colorsMap, claritiesMap, cutsMap, certsMap, URLS} from '../../constants';
 import TopModelNav from '../../compontent/SelectComponent/TopModelNav';
 import {SelectQuery} from '../../compontent/SelectComponent/SelectStatus';
 import * as yup from 'yup';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {useForm, Controller} from 'react-hook-form';
-import {axiosPost} from '../../helper/axios';
-import {
-  actionsEnum,
-  initialPostState,
-  postPirlantaReducer,
-} from '../../hooks/PostActions';
+import {axiosPost, axiosPut} from '../../helper/axios';
+import {actionsEnum, initialPostState, postPirlantaReducer} from '../../hooks/PostActions';
 import {successNotification, msg} from '../../helper/notification';
+
 const schema = yup.object().shape({
   carat: yup.number().positive().max(4).required(),
   adet: yup.number().positive().required(),
@@ -35,59 +20,57 @@ const schema = yup.object().shape({
 //feedback verdirt
 
 const SearchIcon = (props) => <Icon {...props} name="search-outline" />;
-const PirlantaAddInput = (props) => (
-  <Input
-    {...props}
-    keyboardType={'decimal-pad'}
-    style={styles.inputComponent}
-  />
-);
+const PirlantaAddInput = (props) => <Input {...props} keyboardType={'decimal-pad'} style={styles.inputComponent} />;
 
 export const EnvanterAddPirlanta = ({route, navigation}) => {
-  const [state, dispatch] = useReducer(postPirlantaReducer, initialPostState);
+  const screenState = route.params.action === 'put' ? route.params.prevState : initialPostState;
+  const [state, dispatch] = useReducer(postPirlantaReducer, screenState);
   const {control, handleSubmit, errors} = useForm({
     resolver: yupResolver(schema),
   });
-  // useEffect(() => {
-  //   route.params.auto(false);
-  // }, []);
 
   const onSubmit = async (data) => {
-    const params = {
-      color: colorsMap[state.color] ?? '',
-      type: typesMap[state.types] ?? '',
-      cut: cutsMap[state.cut] ?? '',
-      cert: certsMap[state.cert] ?? '',
-      clarity: claritiesMap[state.clarity] ?? '',
-      adet: data.adet,
-      carat: data.carat,
-      price: data.price,
-      magazaId: route.params.magazaId,
-    };
-
     console.log(state.state);
-    const url = URLS.POST_PIRLANTA;
-    await axiosPost(url, params, route.params.token);
+    if (route.params.action === 'post') {
+      const params = {
+        color: colorsMap[state.color] ?? '',
+        type: typesMap[state.types] ?? '',
+        cut: cutsMap[state.cut] ?? '',
+        cert: certsMap[state.cert] ?? '',
+        clarity: claritiesMap[state.clarity] ?? '',
+        adet: data.adet,
+        carat: data.carat,
+        price: data.price,
+        magazaId: route.params.magazaId,
+      };
+      const url = URLS.POST_PIRLANTA;
+      await axiosPost(url, params, route.params.token);
+      successNotification(msg.successfulAdd);
+    } else {
+      const url = URLS.PUT_PIRLANTA + route.params.pirlantaId;
+      console.log(url);
+      const params = {
+        color: colorsMap[state.color] ?? '',
+        type: typesMap[state.types] ?? '',
+        cut: cutsMap[state.cut] ?? '',
+        cert: certsMap[state.cert] ?? '',
+        clarity: claritiesMap[state.clarity] ?? '',
+        adet: data.adet,
+        carat: data.carat,
+        price: data.price,
+        magazaId: route.params.magazaId,
+        id: route.params.pirlantaId,
+      };
+      console.log(params);
+      await axiosPut(url, params, route.params.token);
+      successNotification(msg.successfulPut);
+    }
     route.params.search();
     navigation.goBack();
-    successNotification(msg.successfulAdd);
   };
-
   const PostPirlantaButton = () => (
-    <Button
-      accessoryLeft={SearchIcon}
-      onPress={handleSubmit(onSubmit)}
-      style={{marginVertical: 6}}>
-      Ekle
-    </Button>
-  );
-
-  const PutPirlantaButton = () => (
-    <Button
-      accessoryLeft={SearchIcon}
-      onPress={handleSubmit(onSubmit)}
-      style={{marginVertical: 6}}>
-      Ekle
+    <Button accessoryLeft={SearchIcon} onPress={handleSubmit(onSubmit)} style={{marginVertical: 6}}>
+      {route.params.action === 'post' ? 'Ekle' : 'Değiştir'}
     </Button>
   );
 
@@ -99,48 +82,27 @@ export const EnvanterAddPirlanta = ({route, navigation}) => {
           <Text style={styles.inputComponent}>Fiyat </Text>
           <Controller
             control={control}
-            render={({onChange, onBlur, value}) => (
-              <PirlantaAddInput
-                status={errors.price ? 'danger' : 'primary'}
-                onBlur={onBlur}
-                onChangeText={(value) => onChange(value)}
-                value={value}
-              />
-            )}
+            render={({onChange, onBlur, value}) => <PirlantaAddInput status={errors.price ? 'danger' : 'primary'} onBlur={onBlur} onChangeText={(value) => onChange(value)} value={value} />}
             name="price"
-            defaultValue=""
+            defaultValue={state.price}
           />
         </View>
         <View style={styles.inputContainer}>
           <Text style={styles.inputComponent}>Adet </Text>
           <Controller
             control={control}
-            render={({onChange, onBlur, value}) => (
-              <PirlantaAddInput
-                status={errors.adet ? 'danger' : 'primary'}
-                onBlur={onBlur}
-                onChangeText={(value) => onChange(value)}
-                value={value}
-              />
-            )}
+            render={({onChange, onBlur, value}) => <PirlantaAddInput status={errors.adet ? 'danger' : 'primary'} onBlur={onBlur} onChangeText={(value) => onChange(value)} value={value} />}
             name="adet"
-            defaultValue=""
+            defaultValue={state.adet}
           />
         </View>
         <View style={styles.inputContainer}>
           <Text style={styles.inputComponent}>Karat </Text>
           <Controller
             control={control}
-            render={({onChange, onBlur, value}) => (
-              <PirlantaAddInput
-                status={errors.carat ? 'danger' : 'primary'}
-                onBlur={onBlur}
-                onChangeText={(value) => onChange(value)}
-                value={value}
-              />
-            )}
+            render={({onChange, onBlur, value}) => <PirlantaAddInput status={errors.carat ? 'danger' : 'primary'} onBlur={onBlur} onChangeText={(value) => onChange(value)} value={value} />}
             name="carat"
-            defaultValue=""
+            defaultValue={state.carat}
           />
         </View>
         <SelectQuery
