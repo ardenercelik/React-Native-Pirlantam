@@ -1,9 +1,36 @@
+import {IndexPath} from '@ui-kitten/components';
+import {claritiesMap, typesMap, certsMap, colorsMap, cutsMap} from '../constants';
+
+//mapten geldiği için eksi - 1
+function getKeyByValue(object, value) {
+  let key = Object.keys(object).find((key) => object[key] === value);
+  console.log(key, value);
+  return key - 1;
+}
 export const initialPostState = {
   cut: null,
   types: null,
   color: null,
   clarity: null,
   cert: null,
+  carat: null,
+  adet: '',
+  price: '',
+};
+
+//new indexpath yapmazsan seçilmiyor
+export const generatePrevState = (item) => {
+  const result = {
+    cut: item.cut ? new IndexPath(getKeyByValue(cutsMap, item.cut)) : null,
+    types: item.type ? new IndexPath(getKeyByValue(typesMap, item.type)) : null,
+    color: item.color ? new IndexPath(getKeyByValue(colorsMap, item.color)) : null,
+    clarity: item.clarity ? new IndexPath(getKeyByValue(claritiesMap, item.clarity)) : null,
+    cert: item.cert ? new IndexPath(getKeyByValue(certsMap, item.cert)) : null,
+    carat: `${item.carat}`,
+    adet: `${item.adet}`,
+    price: `${item.price}`,
+  };
+  return result;
 };
 
 export const actionsEnum = {
