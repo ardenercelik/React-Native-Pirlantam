@@ -11,19 +11,7 @@ export const types = {
   MARKIZ: 'MARKIZ',
   SQUARE_RADIANT: 'SQUARE RADIANT',
 };
-export const typesArray = [
-  types.ASSCHER,
-  types.CUSHION,
-  types.EMERALD,
-  types.HEART,
-  types.OVAL,
-  types.PEAR,
-  types.PRINCESS,
-  types.RADIANT,
-  types.ROUND,
-  types.MARKIZ,
-  types.SQUARE_RADIANT,
-];
+export const typesArray = [types.ASSCHER, types.CUSHION, types.EMERALD, types.HEART, types.OVAL, types.PEAR, types.PRINCESS, types.RADIANT, types.ROUND, types.MARKIZ, types.SQUARE_RADIANT];
 export const typesMap = {
   1: types.ASSCHER,
   2: types.CUSHION,
@@ -38,23 +26,7 @@ export const typesMap = {
   11: types.SQUARE_RADIANT,
 };
 
-export const colorsArray = [
-  'D',
-  'E',
-  'F',
-  'G',
-  'H',
-  'I',
-  'J',
-  'K',
-  'L',
-  'M',
-  'N',
-  'P',
-  'R',
-  'S',
-  'Z',
-];
+export const colorsArray = ['D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'P', 'R', 'S', 'Z'];
 export const colorsMap = {
   1: 'D',
   2: 'E',
@@ -73,19 +45,7 @@ export const colorsMap = {
   15: 'Z',
 };
 
-export const claritiesArray = [
-  'IF',
-  'VVS1',
-  'VVS2',
-  'VS1',
-  'VS2',
-  'SI1',
-  'SI2',
-  'SI3',
-  'I1',
-  'I2',
-  'I3',
-];
+export const claritiesArray = ['IF', 'VVS1', 'VVS2', 'VS1', 'VS2', 'SI1', 'SI2', 'SI3', 'I1', 'I2', 'I3'];
 export const claritiesMap = {
   1: 'IF',
   2: 'VVS1',
@@ -123,4 +83,5 @@ export const URLS = {
   GET_PIRLANTA: `${BASE_URL}/pirlantas/query?`,
   DELETE_PIRLANTA: `${BASE_URL}/pirlantas/`,
   POST_PIRLANTA: `${BASE_URL}/pirlantas`,
+  PUT_PIRLANTA: `${BASE_URL}/pirlantas/`,
 };
