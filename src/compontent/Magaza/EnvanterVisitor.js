@@ -2,12 +2,11 @@ import React from 'react';
 import {Text, Layout, Divider, List} from '@ui-kitten/components';
 import {View, StyleSheet} from 'react-native';
 import {MagazaCard} from './MagazaListItem';
-import {MagazaOwnerOverflowMenu} from './MagazaOverflowMenu';
-
+import {MagazaVisitorOverflowMenu} from './MagazaOverflowMenu';
 //phoneNumber, data, button, status
 
-const Envanter = ({navigation, search, token, status, data, button}) => {
-  const renderPirlanta = ({item, index}) => <MagazaCard overflow={<MagazaOwnerOverflowMenu navigation={navigation} item={item} pirlantaId={item.id} search={search} token={token} />} item={item} />;
+const EnvanterVisitor = ({phoneNumber, data, button}) => {
+  const renderPirlanta = ({item, index}) => <MagazaCard overflow={<MagazaVisitorOverflowMenu phoneNumber={phoneNumber} />} item={item} />;
   return (
     <React.Fragment>
       <View style={styles.container}>
@@ -41,4 +40,4 @@ const styles = StyleSheet.create({
   container: {marginTop: '14%'},
 });
 
-export default Envanter;
+export default EnvanterVisitor;

@@ -1,6 +1,7 @@
-import MagazaListItem from '../MagazaListItem';
+import MagazaCard from './MagazaListItem';
 import Envanter from './Envanter';
 import Header from './Header';
-import MagazaOverflowMenu from './MagazaOverflowMenu';
+import MagazaOverflowMenu, {MagazaOwnerOverflowMenu} from './MagazaOverflowMenu';
+import EnvanterVisitor from './EnvanterVisitor';
 
-export {MagazaListItem, Envanter, Header, MagazaOverflowMenu};
+export {MagazaCard, Envanter, Header, MagazaOverflowMenu, EnvanterVisitor};
