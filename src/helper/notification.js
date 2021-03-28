@@ -15,7 +15,7 @@ export function successNotification(msg) {
       titleStyle: {color: theme['color-primary-700']},
     },
     swipeEnabled: true,
-    duration: 2000,
+    duration: 3000,
   });
 }
 
@@ -24,4 +24,5 @@ export const msg = {
   successfulDelete: 'Ürün başarıyla silindi',
   successMagazaChange: 'Magaza bilgileriniz başarıyla değişirilmişir',
   successLogout: 'Başarıyla çıkış yaptınız',
+  successfulPut: 'Ürün başarıyla değiştirldi',
 };
