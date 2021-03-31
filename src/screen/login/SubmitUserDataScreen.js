@@ -7,30 +7,17 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import {LoginContext} from '../../context/LoginContext';
 import {axiosPost, useMagazaLoading} from '../../helper/axios';
 import {BASE_URL} from '../../constants';
-import {useEffect} from 'react/cjs/react.development';
 import {loginStackNavs} from '../../navigation/Navs';
 
 const nameRegex = /^[a-zA-ZàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ]+\s[[\s[a-zA-ZàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ]+/;
 const schema = yup.object().shape({
-  name: yup
-    .string()
-    .matches(nameRegex, 'Lütfen soyadınızı da giriniz')
-    .required(),
-  email: yup
-    .string()
-    .required('Lütfen mail adresinizi giriniz')
-    .email('Geçersiz bir mail adresi girdiniz'),
+  name: yup.string().matches(nameRegex, 'Lütfen soyadınızı da giriniz').required(),
+  email: yup.string().required('Lütfen mail adresinizi giriniz').email('Geçersiz bir mail adresi girdiniz'),
   magazaName: yup.string().max(50),
   magazaAdres: yup.string().max(140),
 });
-function Register({navigation}) {
-  const {user, token, setMagazaLoading} = useContext(LoginContext);
-
-  //ekran buraya geldiğinde true çekiyor. magaszanın aramasını engelliyor. default false,
-  //useMagazaLoading içinde geri false oluyor
-  useEffect(() => {
-    setMagazaLoading(true);
-  }, []);
+function SubmitUserDataScreen({navigation}) {
+  const {user, token} = useContext(LoginContext);
 
   const {control, handleSubmit, errors} = useForm({
     resolver: yupResolver(schema),
@@ -54,13 +41,10 @@ function Register({navigation}) {
     let magazaData = {
       uid: user.uid,
       number: user.phoneNumber,
-      name: data.magazaName === '' ? data.name : data.magazaName,
+      name: data.magazaName === '' ? data.name + 'Diamond' : data.magazaName,
       adres: data.magazaAdres,
     };
-
-    //
-    useMagazaLoading(urlMagaza, magazaData, token, setMagazaLoading);
-
+    useMagazaLoading(urlMagaza, magazaData, token);
     navigation.navigate(loginStackNavs.Menu);
   };
 
@@ -85,9 +69,7 @@ function Register({navigation}) {
             name="name"
             defaultValue=""
           />
-          {errors.name && (
-            <Text style={styles.inputMarginMargin}>{errors.name.message}</Text>
-          )}
+          {errors.name && <Text style={styles.inputMarginMargin}>{errors.name.message}</Text>}
 
           <Controller
             control={control}
@@ -106,9 +88,7 @@ function Register({navigation}) {
             name="email"
             defaultValue=""
           />
-          {errors.email && (
-            <Text style={styles.inputMarginMargin}>{errors.email.message}</Text>
-          )}
+          {errors.email && <Text style={styles.inputMarginMargin}>{errors.email.message}</Text>}
           <Controller
             control={control}
             render={({onChange, onBlur, value}) => (
@@ -126,11 +106,7 @@ function Register({navigation}) {
             name="magazaName"
             defaultValue=""
           />
-          {errors.magazaName && (
-            <Text style={styles.inputMarginMargin}>
-              {errors.magazaName.message}
-            </Text>
-          )}
+          {errors.magazaName && <Text style={styles.inputMarginMargin}>{errors.magazaName.message}</Text>}
           <Controller
             control={control}
             render={({onChange, onBlur, value}) => (
@@ -149,11 +125,7 @@ function Register({navigation}) {
             name="magazaAdres"
             defaultValue=""
           />
-          {errors.magazaAdres && (
-            <Text style={styles.inputMarginMargin}>
-              {errors.magazaAdres.message}
-            </Text>
-          )}
+          {errors.magazaAdres && <Text style={styles.inputMarginMargin}>{errors.magazaAdres.message}</Text>}
         </View>
 
         <Button onPress={handleSubmit(onSubmit)} style={styles.uyeOl}>
@@ -184,4 +156,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Register;
+export default SubmitUserDataScreen;

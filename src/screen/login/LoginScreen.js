@@ -1,12 +1,14 @@
 import React, {useState, useEffect, useContext} from 'react';
 import {View, StyleSheet} from 'react-native';
-import {Button, Text, Input, Modal} from '@ui-kitten/components';
+import {Button, Text, Input, Modal, Layout, Card} from '@ui-kitten/components';
 import * as yup from 'yup';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {useForm, Controller} from 'react-hook-form';
 import auth from '@react-native-firebase/auth';
 import {LoginContext} from '../../context/LoginContext';
-import {isFirstTime} from '../../helper/login';
+import {loginStackNavs} from '../../navigation/Navs';
+import {CountryFlagCard} from '../../compontent/authorization';
+
 const phoneRegex = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
 
 const schema = yup.object().shape({
@@ -18,7 +20,6 @@ function Login({navigation}) {
   const [confirm, setConfirm] = useState(null);
   const [code, setCode] = useState('');
   const [initializing, setInitializing] = useState(true);
-  //const [user, setUser] = useState();
   const [visible, setVisible] = useState(false);
 
   async function signInWithPhoneNumber(phoneNumber) {
@@ -30,36 +31,18 @@ function Login({navigation}) {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
     return subscriber; // unsubscribe on unmount
   }, []);
+
   function onAuthStateChanged(user) {
     if (user) {
       setUser(user);
-      if (isFirstTime(user)) {
-        navigation.navigate('Register');
-      } else {
-        navigation.navigate('Menu');
-      }
     }
     if (initializing) setInitializing(false);
   }
+
   const onSubmit = (data) => {
-    console.log('+44' + data.tel);
-    signInWithPhoneNumber('+44' + data.tel);
+    console.log('+90' + data.tel);
+    signInWithPhoneNumber('+90' + data.tel);
   };
-  // const getToken = async () => {
-  //   if (user) {
-  //     const user = await auth().currentUser;
-  //     const idTokenResult = await auth().currentUser.getIdToken(
-  //       /* forceRefresh */ true,
-  //     );
-  //     // setUser(user);
-  //     //idTokenResult = user.getIdToken();
-  //     console.log('User JWT: ', idTokenResult);
-  //     // console.log(user.uid);
-  //   }
-  // };
-  // useEffect(() => {
-  //   getToken();
-  // }, []);
 
   async function confirmCode(user) {
     try {
@@ -81,35 +64,41 @@ function Login({navigation}) {
     <React.Fragment>
       <View style={styles.container}>
         <View>
-          <Controller
-            control={control}
-            render={({onChange, onBlur, value}) => (
-              <Input
-                keyboardType="number-pad"
-                size="large"
-                status={errors.tel ? 'danger' : 'primary'}
-                autoCompleteType="tel"
-                style={styles.inputMarginMargin}
-                placeholder="Cep Telefonu"
-                onBlur={onBlur}
-                onChangeText={(value) => onChange(value)}
-                value={value}
-                accessoryLeft={() => <Text>+90</Text>}
-              />
-            )}
-            name="tel"
-            defaultValue=""
-          />
-          {errors.tel && (
-            <Text style={styles.inputMarginMargin}>{errors.tel.message}</Text>
-          )}
+          <Button>Google ile giriş Yap</Button>
+          <View style={{flexDirection: 'row', alignItems: 'flex-end', marginTop: '2%', marginBottom: '1%'}}>
+            <CountryFlagCard />
 
-          <Button onPress={handleSubmit(onSubmit)}>Login</Button>
+            <Controller
+              control={control}
+              render={({onChange, onBlur, value}) => (
+                <Input
+                  keyboardType="number-pad"
+                  size="large"
+                  status={errors.tel ? 'danger' : 'basic'}
+                  autoCompleteType="tel"
+                  style={styles.inputMarginMargin}
+                  placeholder="Cep Telefonu"
+                  onBlur={onBlur}
+                  onChangeText={(value) => onChange(value)}
+                  value={value}
+                  style={{flex: 1}}
+                />
+              )}
+              name="tel"
+              defaultValue=""
+            />
+            {errors.tel && <Text style={styles.inputMarginMargin}>{errors.tel.message}</Text>}
+          </View>
+
+          <Button size="large" onPress={handleSubmit(onSubmit)}>
+            Login
+          </Button>
         </View>
+        <Button onPress={() => navigation.navigate(loginStackNavs.Register)} style={{marginBottom: '5%'}}>
+          Üye Ol!
+        </Button>
 
-        <Modal
-          backdropStyle={{backgroundColor: 'rgba(0,0,0,0.9)'}}
-          visible={visible}>
+        <Modal backdropStyle={{backgroundColor: 'rgba(0,0,0,0.9)'}} visible={visible}>
           <Input value={code} onChangeText={(text) => setCode(text)} />
           <Button
             title="Confirm Code"
@@ -131,6 +120,8 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'space-between',
+    marginHorizontal: '2%',
+    marginTop: '5%',
   },
   uyeOl: {},
   input: {
@@ -139,6 +130,12 @@ const styles = StyleSheet.create({
   forgotTextContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
+  },
+  inputCard: {
+    height: 48,
+    marginBottom: 4,
+    marginRight: '3%',
+    borderRadius: 2,
   },
 });
 

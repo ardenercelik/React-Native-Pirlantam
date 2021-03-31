@@ -1,23 +1,22 @@
 import auth from '@react-native-firebase/auth';
-
-const userMetadataRegex = /^(\w+-\w+-\w+)T(\w+:\w+:\w+).+Z$/;
-export const isFirstTime = (user) => {
-  if (user) {
-    const cre = user.metadata.creationTime.match(userMetadataRegex);
-    const lst = user.metadata.lastSignInTime.match(userMetadataRegex);
-    let CrDate = cre[1];
-    let CrTime = cre[2];
-    let LsDate = lst[1];
-    let LsTime = lst[2];
-    console.log({user});
-    if (CrDate === LsDate && CrTime === LsTime) {
-      console.log('first sign in');
-      return true;
-    } else {
-      console.log('welcome back');
-      return false;
+import {URLS} from '../constants';
+import {axiosInstance, fetchData} from './axios';
+export const isFirstTime = async (uid) => {
+  let result = false;
+  url = URLS.GET_USER + uid;
+  console.log('uid' + uid);
+  try {
+    const response = await axiosInstance.get(url);
+    if (response.status === 200) {
+      console.log('User exists on the DB: ' + response.status);
+    }
+  } catch (e) {
+    if (e.response.status === 404) {
+      console.log(`User does not exist on DB: ${e.response.status}`);
+      result = true;
     }
   }
+  return result;
 };
 
 export const signOut = (user, setUser, setToken) => {
