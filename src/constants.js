@@ -84,4 +84,5 @@ export const URLS = {
   DELETE_PIRLANTA: `${BASE_URL}/pirlantas/`,
   POST_PIRLANTA: `${BASE_URL}/pirlantas`,
   PUT_PIRLANTA: `${BASE_URL}/pirlantas/`,
+  GET_USER: `${BASE_URL}/api/users/`,
 };
