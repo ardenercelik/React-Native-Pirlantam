@@ -11,6 +11,29 @@
           "mapping": {
             "bodyPaddingHorizontal": 5,
             "bodyPaddingVertical": 5
+          },
+          "filled": {
+            "mapping": {
+              "borderWidth": 20,
+              "borderColor": "black"
+            }
+          }
+        }
+      }
+    },
+    "Input": {
+      "meta": {},
+      "appearances": {
+        "default": {
+          "mapping": {
+            "labelMarginBottom": 0
+          },
+          "variantGroups": {
+            "size": {
+              "large": {
+                "paddingVertical": 0
+              }
+            }
           }
         }
       }

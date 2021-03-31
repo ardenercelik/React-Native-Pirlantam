@@ -7,7 +7,5 @@ export const StyledText = ({children, props}) => (
   </Text>
 );
 const styles = StyleSheet.create({
-  mainColor: {
-    fontWeight: 'bold',
-  },
+  mainColor: {},
 });
