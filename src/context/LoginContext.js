@@ -1,13 +1,14 @@
 // new
 import React, {useEffect, useState} from 'react';
 import auth from '@react-native-firebase/auth';
+import {isFirstTime} from '../helper/login';
 // new
 
 const LoginContext = React.createContext([]);
 function LoginContextProvider(props) {
   const [user, setUser] = useState();
   const [token, setToken] = useState();
-  const [magazaLoading, setMagazaLoading] = useState(false);
+  const [firstSignIn, setFirstSignIn] = useState();
 
   useEffect(() => {
     const getJwt = async () => {
@@ -36,8 +37,6 @@ function LoginContextProvider(props) {
         setUser,
         token,
         setToken,
-        magazaLoading,
-        setMagazaLoading,
       }}>
       {props.children}
     </LoginContext.Provider>
