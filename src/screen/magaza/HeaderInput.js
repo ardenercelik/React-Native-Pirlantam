@@ -15,7 +15,7 @@ const schema = yup.object().shape({
   name: yup.string().required().max(30),
   adres: yup.string().required('Lütfen mail adresinizi giriniz'),
 });
-
+//iconları ekle
 const PhoneIcon = (props) => <Icon {...props} name="smartphone-outline" />;
 const MailIcon = (props) => <Icon {...props} name="email-outline" />;
 

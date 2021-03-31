@@ -11,23 +11,23 @@ import {LoginContextProvider} from './context/LoginContext';
 import {NotifierWrapper} from 'react-native-notifier';
 import {QueryClientProvider} from 'react-query';
 import {queryClient} from './helper/query-client';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
 export const Stack = createStackNavigator();
 //validasyon bozuk ikisi de yanıyo
-//Performance Monitoring
-//Crashlytics
-//Storage
 export default App = () => {
   return (
     <>
       <LoginContextProvider>
-        <IconRegistry icons={[EvaIconsPack]} />
-        <ApplicationProvider {...eva} customMapping={mapping} theme={{...eva.light, ...theme}}>
-          <QueryClientProvider client={queryClient}>
-            <NotifierWrapper>
-              <AppNavigator />
-            </NotifierWrapper>
-          </QueryClientProvider>
-        </ApplicationProvider>
+        <SafeAreaProvider>
+          <IconRegistry icons={[EvaIconsPack]} />
+          <ApplicationProvider {...eva} customMapping={mapping} theme={{...eva.light, ...theme}}>
+            <QueryClientProvider client={queryClient}>
+              <NotifierWrapper>
+                <AppNavigator />
+              </NotifierWrapper>
+            </QueryClientProvider>
+          </ApplicationProvider>
+        </SafeAreaProvider>
       </LoginContextProvider>
     </>
   );
